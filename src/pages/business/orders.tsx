@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Search, Filter, Phone, ChevronRight, UserCircle } from "lucide-react";
+import { Search, Filter, Phone, MapPinned, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +19,6 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function BusinessOrders() {
-  const [, navigate] = useLocation();
   const business = getCurrentBusiness();
   const businessId = business?.id;
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -31,6 +29,16 @@ export default function BusinessOrders() {
   const assignRider = useAssignRider();
 
   const orders = ordersData?.orders ?? [];
+  const filteredOrders = orders.filter((order) => {
+    if (!search.trim()) return true;
+    const q = search.trim().toLowerCase();
+    return (
+      order.id.toLowerCase().includes(q)
+      || order.customer?.name?.toLowerCase().includes(q)
+      || order.customer?.phone?.toLowerCase().includes(q)
+      || order.customer?.address?.toLowerCase().includes(q)
+    );
+  });
 
   const handleStatusUpdate = async (orderId: string, status: string) => {
     await updateOrder.mutateAsync({ id: orderId, data: { status: status as any } });
@@ -40,6 +48,17 @@ export default function BusinessOrders() {
   const handleAssignRider = async (orderId: string, riderId: string) => {
     await assignRider.mutateAsync({ id: orderId, data: { riderId } });
     refetch();
+  };
+
+  const openMap = (order: any) => {
+    const lat = order.customer?.lat ? Number(order.customer.lat) : null;
+    const lng = order.customer?.lng ? Number(order.customer.lng) : null;
+    const address = [order.customer?.address, order.customer?.city, order.customer?.pincode].filter(Boolean).join(", ");
+
+    const url = lat != null && lng != null
+      ? `https://www.google.com/maps?q=${lat},${lng}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address || order.customer?.name || "customer location")}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -88,7 +107,7 @@ export default function BusinessOrders() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {orders.map(order => (
+              {filteredOrders.map(order => (
                 <motion.tr key={order.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
                     <div>
@@ -102,6 +121,7 @@ export default function BusinessOrders() {
                       <div>
                         <p className="text-sm font-medium text-gray-900">{order.customer?.name ?? "Customer"}</p>
                         <p className="text-xs text-gray-500">{order.customer?.phone ?? ""}</p>
+                        <p className="text-[11px] text-gray-400 max-w-[220px] truncate">{order.customer?.address ?? "Address unavailable"}</p>
                       </div>
                     </div>
                   </td>
@@ -132,7 +152,7 @@ export default function BusinessOrders() {
                     </Select>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       {order.status === "requested" && (
                         <Button size="sm" onClick={() => handleStatusUpdate(order.id, "accepted")} className="h-7 text-xs bg-green-500 hover:bg-green-600 text-white rounded-lg">Accept</Button>
                       )}
@@ -148,13 +168,27 @@ export default function BusinessOrders() {
                           </SelectContent>
                         </Select>
                       )}
+                      {order.customer?.phone && (
+                        <a
+                          href={`tel:${order.customer.phone}`}
+                          className="h-7 px-2 text-xs rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center gap-1"
+                        >
+                          <Phone className="w-3 h-3" /> Call
+                        </a>
+                      )}
+                      <button
+                        onClick={() => openMap(order)}
+                        className="h-7 px-2 text-xs rounded-lg bg-sky-50 text-sky-700 border border-sky-200 inline-flex items-center gap-1"
+                      >
+                        <MapPinned className="w-3 h-3" /> Map
+                      </button>
                     </div>
                   </td>
                 </motion.tr>
               ))}
             </tbody>
           </table>
-          {orders.length === 0 && (
+          {filteredOrders.length === 0 && (
             <div className="text-center py-12 text-gray-400">
               <ShoppingBagIcon />
               <p className="mt-2 text-sm">No orders found</p>

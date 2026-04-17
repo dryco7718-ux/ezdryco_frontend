@@ -1,7 +1,8 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { User, Store, ShieldCheck, Shirt } from "lucide-react";
+import { User, Store, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { WashifyLogo } from "@/components/Logo";
 
 export default function PortalSelector() {
   const portals = [
@@ -42,12 +43,9 @@ export default function PortalSelector() {
         className="text-center mb-12"
       >
         <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center">
-            <Shirt className="w-6 h-6 text-white" />
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">Washify</h1>
+          <WashifyLogo size={42} />
         </div>
-        <p className="text-base text-sky-600 font-medium mb-1">Cloth Spa — Wear Fresh, Every Day</p>
+        <p className="text-base text-sky-600 font-medium mb-1">EzDry - Cloth Spa, Wear Fresh Every Day</p>
         <p className="text-sm text-gray-500 max-w-md mx-auto">
           Select a portal to experience the complete Laundry & Dry Cleaning platform.
         </p>

@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { WashifyLogo } from "@/components/Logo";
+import { NotificationBell } from "@/components/NotificationPanel";
 
 const NAV_ITEMS = [
   { href: "/business/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -77,6 +78,7 @@ export function BusinessLayout({ children }: Props) {
             {NAV_ITEMS.find(i => location.startsWith(i.href))?.label ?? "Dashboard"}
           </h1>
           <div className="flex items-center gap-2">
+            <NotificationBell />
             <span className="text-sm text-gray-400 hidden sm:block">{currentBusiness.ownerName || "Business Owner"}</span>
             <div className="w-8 h-8 bg-sky-100 rounded-full flex items-center justify-center">
               <span className="text-sky-600 font-bold text-sm">

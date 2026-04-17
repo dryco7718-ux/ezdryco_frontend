@@ -223,6 +223,42 @@ export default function Profile() {
           </div>
         </div>
 
+        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+          <h3 className="font-semibold text-gray-900">Use EzDry Like an App</h3>
+          <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+            <li>Open EzDry in Chrome on your phone.</li>
+            <li>Tap browser menu and choose "Add to Home Screen".</li>
+            <li>Home screen icon se open karoge to app jaisa full-screen experience milega.</li>
+            <li>Notifications allow karo to order updates turant milenge.</li>
+          </ul>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+          <h3 className="font-semibold text-gray-900">About EzDry</h3>
+          <p className="text-sm text-gray-600">
+            EzDry ek doorstep laundry and dry-cleaning platform hai jahan aap pickup schedule kar sakte ho,
+            order live track kar sakte ho, aur delivery status real-time me dekh sakte ho.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="rounded-xl bg-sky-50 p-3">
+              <p className="font-medium text-gray-800">Core Services</p>
+              <p className="text-gray-600 mt-1">Wash & Fold, Dry Cleaning, Steam Iron, Express Delivery</p>
+            </div>
+            <div className="rounded-xl bg-sky-50 p-3">
+              <p className="font-medium text-gray-800">Coverage</p>
+              <p className="text-gray-600 mt-1">Doorstep pickup and drop with business-partner network</p>
+            </div>
+            <div className="rounded-xl bg-sky-50 p-3">
+              <p className="font-medium text-gray-800">Safety</p>
+              <p className="text-gray-600 mt-1">Order history, status timeline, and secure account access</p>
+            </div>
+            <div className="rounded-xl bg-sky-50 p-3">
+              <p className="font-medium text-gray-800">Support</p>
+              <p className="text-gray-600 mt-1">Call support for pickup, delay, or delivery help anytime</p>
+            </div>
+          </div>
+        </div>
+
         {/* Sign Out */}
         <button
           onClick={() => {

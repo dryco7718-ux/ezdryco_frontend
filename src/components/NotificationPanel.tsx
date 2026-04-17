@@ -1,46 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Package, Tag, Info, CheckCircle2 } from "lucide-react";
+import { useListNotifications } from "@/lib/api-client-react";
+import { getCurrentBusiness, getCurrentCustomer } from "@/lib/session";
 
-const DEFAULT_NOTIFICATIONS = [
-  {
-    id: "1",
-    type: "order",
-    title: "Order Picked Up!",
-    message: "Your laundry has been picked up by our rider.",
-    time: "10 mins ago",
-    read: false,
-  },
-  {
-    id: "2",
-    type: "promo",
-    title: "Weekend Special 🎉",
-    message: "Free pickup this Saturday & Sunday. Book now!",
-    time: "2 hrs ago",
-    read: false,
-  },
-  {
-    id: "3",
-    type: "order",
-    title: "Order Delivered ✓",
-    message: "Your previous order has been delivered. Rate your experience!",
-    time: "Yesterday",
-    read: true,
-  },
-  {
-    id: "4",
-    type: "promo",
-    title: "Cloth Spa Offer",
-    message: "Get 20% off on dry cleaning this week. Use code DRY20.",
-    time: "2 days ago",
-    read: true,
-  },
-];
+const LOCAL_READ_KEY = "ezdry_local_notification_reads";
+const LAST_BROWSER_ALERT_KEY = "ezdry_last_browser_notification";
 
 const ICONS: Record<string, any> = {
   order: Package,
   promo: Tag,
   system: Info,
+  status: Package,
 };
 
 const ICON_COLORS: Record<string, string> = {
@@ -51,33 +22,43 @@ const ICON_COLORS: Record<string, string> = {
 
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState(() => {
+  const userId = getCurrentCustomer()?.id || getCurrentBusiness()?.userId;
+  const { data, refetch } = useListNotifications(
+    { userId, unread: false },
+    { query: { enabled: !!userId, refetchInterval: 20000 } as any },
+  );
+  const [localReadMap, setLocalReadMap] = useState<Record<string, boolean>>(() => {
     try {
-      const saved = localStorage.getItem("washify_notifications");
-      return saved ? JSON.parse(saved) : DEFAULT_NOTIFICATIONS;
+      return JSON.parse(localStorage.getItem(LOCAL_READ_KEY) || "{}");
     } catch {
-      return DEFAULT_NOTIFICATIONS;
+      return {};
     }
   });
   const panelRef = useRef<HTMLDivElement>(null);
+  const notifications = (data ?? []).map((n: any) => ({
+    ...n,
+    read: Boolean(n.isRead) || Boolean(localReadMap[n.id]),
+  }));
 
   const unreadCount = notifications.filter((n: any) => !n.read).length;
 
   const markAllRead = () => {
-    const updated = notifications.map((n: any) => ({ ...n, read: true }));
-    setNotifications(updated);
-    localStorage.setItem("washify_notifications", JSON.stringify(updated));
+    const updated = { ...localReadMap };
+    notifications.forEach((n: any) => {
+      updated[n.id] = true;
+    });
+    setLocalReadMap(updated);
+    localStorage.setItem(LOCAL_READ_KEY, JSON.stringify(updated));
   };
 
   const markRead = (id: string) => {
-    const updated = notifications.map((n: any) => n.id === id ? { ...n, read: true } : n);
-    setNotifications(updated);
-    localStorage.setItem("washify_notifications", JSON.stringify(updated));
+    const updated = { ...localReadMap, [id]: true };
+    setLocalReadMap(updated);
+    localStorage.setItem(LOCAL_READ_KEY, JSON.stringify(updated));
   };
 
   const clearAll = () => {
-    setNotifications([]);
-    localStorage.setItem("washify_notifications", JSON.stringify([]));
+    markAllRead();
   };
 
   useEffect(() => {
@@ -89,6 +70,40 @@ export function NotificationBell() {
     if (open) document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
+
+  useEffect(() => {
+    if (!notifications.length) return;
+    if (typeof window === "undefined" || typeof Notification === "undefined") return;
+
+    const latest = [...notifications]
+      .sort((a: any, b: any) => Date.parse(b.createdAt || "") - Date.parse(a.createdAt || ""))[0];
+    if (!latest?.id) return;
+
+    const lastShownId = localStorage.getItem(LAST_BROWSER_ALERT_KEY);
+    if (lastShownId === latest.id) return;
+
+    const show = () => {
+      const notification = new Notification(latest.title || "EzDry update", {
+        body: latest.message || "You have a new update",
+        icon: "/ezdry-logo.svg",
+      });
+      notification.onclick = () => {
+        window.focus();
+      };
+      localStorage.setItem(LAST_BROWSER_ALERT_KEY, latest.id);
+    };
+
+    if (Notification.permission === "granted") {
+      show();
+      return;
+    }
+
+    if (Notification.permission === "default") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") show();
+      });
+    }
+  }, [notifications]);
 
   return (
     <div className="relative" ref={panelRef}>
@@ -167,7 +182,7 @@ export function NotificationBell() {
                           {!n.read && <div className="w-2 h-2 bg-sky-500 rounded-full flex-shrink-0" />}
                         </div>
                         <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.message}</p>
-                        <p className="text-[10px] text-gray-400 mt-1">{n.time}</p>
+                        <p className="text-[10px] text-gray-400 mt-1">{n.createdAt ? new Date(n.createdAt).toLocaleString() : "Just now"}</p>
                       </div>
                     </button>
                   );

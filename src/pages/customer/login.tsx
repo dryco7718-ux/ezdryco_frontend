@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Shirt, ChevronLeft, Phone, Lock, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, Phone, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginCustomer } from "@/lib/auth-api";
 import { saveCustomerSession } from "@/lib/session";
+import { WashifyLogo } from "@/components/Logo";
 
 export default function CustomerLogin() {
   const [, navigate] = useLocation();
@@ -40,11 +41,8 @@ export default function CustomerLogin() {
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-            <Shirt className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-1">Washify</h1>
-          <p className="text-sky-100 text-sm">Cloth Spa — Wear Fresh, Every Day</p>
+          <WashifyLogo size={56} textColor="text-white" className="mb-4" />
+          <p className="text-sky-100 text-sm">EzDry - Cloth Spa, Wear Fresh Every Day</p>
         </motion.div>
       </div>
 
@@ -107,7 +105,7 @@ export default function CustomerLogin() {
 
           <div className="text-center">
             <p className="text-sm text-gray-500">
-              New to Washify?{" "}
+              New to EzDry?{" "}
               <button onClick={() => navigate("/customer/register")} className="text-sky-500 font-semibold hover:underline">
                 Create Account
               </button>

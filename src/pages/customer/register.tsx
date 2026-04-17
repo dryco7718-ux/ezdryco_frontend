@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Shirt, ChevronLeft, User, Phone, MapPin, Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { ChevronLeft, User, Phone, MapPin, Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerCustomer } from "@/lib/auth-api";
+import { WashifyLogo } from "@/components/Logo";
 
 export default function CustomerRegister() {
   const [, navigate] = useLocation();
@@ -47,7 +48,7 @@ export default function CustomerRegister() {
           <div className="w-20 h-20 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-sky-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Washify!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to EzDry!</h2>
           <p className="text-gray-500 text-sm mb-8">Your account has been created successfully.<br />Please login with your phone number & password.</p>
           <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-2xl px-10 h-12 font-semibold">
             Go to Login
@@ -64,11 +65,9 @@ export default function CustomerRegister() {
           <ChevronLeft className="w-4 h-4" /> Back to Login
         </button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-            <Shirt className="w-8 h-8 text-white" />
-          </div>
+          <WashifyLogo size={56} textColor="text-white" className="mb-4" />
           <h1 className="text-2xl font-bold text-white mb-1">Create Account</h1>
-          <p className="text-sky-100 text-sm">Join Washify — Cloth Spa awaits you!</p>
+          <p className="text-sky-100 text-sm">Join EzDry - Cloth Spa awaits you!</p>
         </motion.div>
       </div>
 

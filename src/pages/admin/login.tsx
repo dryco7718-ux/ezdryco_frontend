@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Shirt, Lock, Mail } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { WashifyLogo } from "@/components/Logo";
 
 const ADMIN_EMAIL = "kbdon7718@gmail.com";
 const ADMIN_PASSWORD = "@Zad7718";
@@ -36,10 +37,8 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white flex items-center justify-center p-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md shadow-sky-200">
-            <Shirt className="w-9 h-9 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">Washify Admin</h1>
+          <WashifyLogo size={60} className="justify-center mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900">EzDry Admin</h1>
           <p className="text-gray-400 text-sm mt-1">Cloth Spa — Platform Management</p>
         </div>
         <div className="bg-white rounded-2xl shadow-md p-8 border border-sky-100">
@@ -50,7 +49,7 @@ export default function AdminLogin() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   type="email"
-                  placeholder="admin@washify.io"
+                  placeholder="admin@ezdry.app"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   className="pl-10 h-11 rounded-xl border-sky-100 focus-visible:ring-sky-400"

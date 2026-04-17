@@ -2,14 +2,16 @@ import { ReactNode, useState } from "react";
 import { useLocation, Link } from "wouter";
 import {
   LayoutDashboard, Store, Percent,
-  Users, Bell, LogOut, ShieldCheck, Menu, X, Shirt
+  Users, Bell, LogOut, ShieldCheck, Menu, X, BookOpen
 } from "lucide-react";
+import { WashifyLogo } from "@/components/Logo";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/businesses", icon: Store, label: "Businesses" },
   { href: "/admin/commission", icon: Percent, label: "Commission" },
   { href: "/admin/users", icon: Users, label: "Users" },
+  { href: "/admin/blogs", icon: BookOpen, label: "Blogs" },
   { href: "/admin/notifications", icon: Bell, label: "Notifications" },
 ];
 
@@ -27,11 +29,9 @@ export function AdminLayout({ children }: Props) {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-sky-100 flex flex-col transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static`}>
         <div className="p-6 border-b border-sky-50">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-sky-500 rounded-xl flex items-center justify-center">
-              <Shirt className="w-5 h-5 text-white" />
-            </div>
+            <WashifyLogo size={34} iconOnly />
             <div>
-              <p className="font-bold text-gray-900 text-sm">Washify Admin</p>
+              <p className="font-bold text-gray-900 text-sm">EzDry Admin</p>
               <p className="text-xs text-gray-400">Super Admin Panel</p>
             </div>
           </div>

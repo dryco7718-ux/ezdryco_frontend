@@ -37,6 +37,7 @@ import AdminBusinesses from "@/pages/admin/businesses";
 import AdminCommission from "@/pages/admin/commission";
 import AdminUsers from "@/pages/admin/users";
 import AdminNotifications from "@/pages/admin/notifications";
+import AdminBlogs from "@/pages/admin/blogs";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 30000 } },
@@ -127,6 +128,9 @@ function Router() {
       </Route>
       <Route path="/admin/notifications">
         {() => <WithAdminLayout><AdminNotifications /></WithAdminLayout>}
+      </Route>
+      <Route path="/admin/blogs">
+        {() => <WithAdminLayout><AdminBlogs /></WithAdminLayout>}
       </Route>
 
       <Route component={NotFound} />

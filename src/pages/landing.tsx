@@ -2,12 +2,13 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import {
   Shirt, Truck, Star, CheckCircle, MapPin, Clock, Shield,
-  ChevronRight, Phone, Mail, Instagram, Facebook, Sparkles
+  ChevronRight, Phone, Mail, Instagram, Facebook, Sparkles, BookOpenText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WashifyLogo } from "@/components/Logo";
+import { listBlogs } from "@/lib/blogs";
 
-const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Your Laundry";
+const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EzDry";
 const CONTACT_PHONE = "+91 80533 17489";
 const CONTACT_EMAIL = "dryco7718@gmail.com";
 const SERVICE_AREA = "Narnaul";
@@ -34,6 +35,7 @@ const TESTIMONIALS = [
 
 export default function LandingPage() {
   const [, navigate] = useLocation();
+  const blogPosts = listBlogs(false).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -45,6 +47,7 @@ export default function LandingPage() {
             <a href="#services" className="hover:text-sky-500 transition-colors">Services</a>
             <a href="#how" className="hover:text-sky-500 transition-colors">How It Works</a>
             <a href="#reviews" className="hover:text-sky-500 transition-colors">Reviews</a>
+            <a href="#blogs" className="hover:text-sky-500 transition-colors">Blogs</a>
             <a href="#contact" className="hover:text-sky-500 transition-colors">Contact</a>
           </div>
           <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
@@ -241,6 +244,34 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* BLOGS */}
+      <section id="blogs" className="py-20 bg-sky-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">EzDry Blogs</h2>
+            <p className="text-gray-500">Laundry tips, fabric care guides, and service updates.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {blogPosts.map((post) => (
+              <article key={post.id} className="bg-white rounded-3xl border border-sky-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-40 bg-gradient-to-br from-sky-300 to-sky-500 flex items-center justify-center">
+                  {post.coverImageUrl ? (
+                    <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <BookOpenText className="w-12 h-12 text-white" />
+                  )}
+                </div>
+                <div className="p-5">
+                  <p className="text-xs text-sky-600 font-semibold mb-2">{new Date(post.createdAt).toLocaleDateString()} • {post.author}</p>
+                  <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{post.title}</h3>
+                  <p className="text-sm text-gray-500 line-clamp-3">{post.excerpt}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* JOIN AS BUSINESS */}
       <section className="py-20 bg-gradient-to-br from-sky-500 to-sky-600">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -323,16 +354,20 @@ export default function LandingPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <a href="https://instagram.com/yourlaundry" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
+              <a href="https://instagram.com/washify" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com/yourlaundry" target="_blank" rel="noreferrer" aria-label="Facebook" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
+              <a href="https://facebook.com/washify" target="_blank" rel="noreferrer" aria-label="Facebook" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
                 <Facebook className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-6 flex items-center justify-between">
+          <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div>
+              <p className="text-gray-300 text-sm font-semibold">Contact Us</p>
+              <p className="text-gray-500 text-xs">Phone: {CONTACT_PHONE} • Email: {CONTACT_EMAIL}</p>
+            </div>
             <p className="text-gray-500 text-sm">© 2025 {BRAND_NAME}. All rights reserved.</p>
             <button
               onClick={() => navigate("/admin/login")}

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Store, Lock, Eye, EyeOff, ChevronLeft } from "lucide-react";
+import { Lock, Eye, EyeOff, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginBusiness } from "@/lib/auth-api";
 import { saveBusinessSession } from "@/lib/session";
+import { WashifyLogo } from "@/components/Logo";
 
 export default function BusinessLogin() {
   const [, navigate] = useLocation();
@@ -43,9 +44,7 @@ export default function BusinessLogin() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
           <div className="lg:col-span-7">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md shadow-sky-200">
-                <Store className="w-9 h-9 text-white" />
-              </div>
+              <WashifyLogo size={60} className="justify-center mb-4" />
               <h1 className="text-2xl font-bold text-gray-900">Business Login</h1>
               <p className="text-gray-400 text-sm mt-1">Login with your registered phone & password</p>
             </div>
