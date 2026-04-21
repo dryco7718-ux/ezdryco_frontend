@@ -77,7 +77,7 @@ export default function Checkout() {
         setLocationLoading(false);
       },
       () => {
-        setSubmitError("Current location fetch nahi ho paayi. Manual address enter karo.");
+        setSubmitError("Unable to fetch current location. Please enter address manually.");
         setLocationLoading(false);
       },
       { enableHighAccuracy: true, timeout: 10000 },
@@ -88,7 +88,7 @@ export default function Checkout() {
     if (addressId) return addressId;
     if (!customerId) throw new Error("Please login again.");
     if (!addressForm.line1.trim() || !addressForm.city.trim() || !addressForm.pincode.trim()) {
-      throw new Error("Pickup address fill karo ya current location select karo.");
+      throw new Error("Please enter pickup address or select current location.");
     }
 
     const created = await createAddress.mutateAsync({

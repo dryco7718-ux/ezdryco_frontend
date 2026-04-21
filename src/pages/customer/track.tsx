@@ -8,13 +8,12 @@ import { NotificationBell } from "@/components/NotificationPanel";
 const ORDER_STEPS = [
   { key: "requested", label: "Order Placed", desc: "Your order has been received" },
   { key: "accepted", label: "Accepted", desc: "Dry cleaner has accepted your order" },
-  { key: "picked_up", label: "Picked Up", desc: "Your clothes have been picked up" },
-  { key: "cleaning", label: "Cleaning in Progress", desc: "Your garments are being cleaned" },
-  { key: "out_for_delivery", label: "Out for Delivery", desc: "Your order is on its way" },
+  { key: "cleaning", label: "In Process", desc: "Your garments are being cleaned/ironed" },
+  { key: "ready", label: "Ready", desc: "Your order is ready for delivery/pickup" },
   { key: "delivered", label: "Delivered", desc: "Your clothes have been delivered!" },
 ];
 
-const STATUS_ORDER = ["requested", "accepted", "picked_up", "cleaning", "out_for_delivery", "delivered"];
+const STATUS_ORDER = ["requested", "accepted", "cleaning", "ready", "delivered"];
 
 export default function TrackOrder() {
   const [, navigate] = useLocation();
@@ -35,7 +34,7 @@ export default function TrackOrder() {
             </button>
             <div>
               <h1 className="font-bold text-lg text-gray-900">Track Order</h1>
-              <p className="text-xs text-gray-500">Order #{orderId}</p>
+              <p className="text-xs text-gray-500">Order #{String(orderId).slice(-6).padStart(6, '0')}</p>
             </div>
           </div>
           <NotificationBell />

@@ -18,6 +18,60 @@ const CATEGORY_ICONS: Record<string, string> = {
   fold: "🧼",
 };
 
+// Item-specific emojis based on item name
+const ITEM_EMOJIS: Record<string, string> = {
+  shirt: "👔",
+  tshirt: "👕",
+  "t-shirt": "👕",
+  pant: "👖",
+  trousers: "👖",
+  jeans: "👖",
+  blazer: "🧥",
+  jacket: "🧥",
+  coat: "🧥",
+  suit: "🤵",
+  saree: "🥻",
+  dress: "👗",
+  skirt: "👗",
+  kurta: "👘",
+  pyjama: "🩳",
+  shorts: "🩳",
+  undergarment: "🩲",
+  innerwear: "🩲",
+  socks: "🧦",
+  tie: "👔",
+  belt: "🪢",
+  cap: "🧢",
+  hat: "👒",
+  scarf: "🧣",
+  glove: "🧤",
+  sweater: "🧶",
+  blanket: "🛏️",
+  bedsheet: "🛏️",
+  curtain: "🪟",
+  towel: "🧻",
+  tablecloth: "🧺",
+  napkin: "🧻",
+  handkerchief: "🧻",
+  lehenga: "👗",
+  sherwani: "🤵",
+  waistcoat: "🦺",
+  vest: "🦺",
+  swimsuit: "🩱",
+  bikini: "👙",
+  gown: "👗",
+  frock: "👗",
+  hoodie: "🧥",
+  sweatshirt: "👕",
+  polo: "👕",
+  formal: "👔",
+  casual: "👕",
+  woolen: "🧶",
+  silk: "🥻",
+  cotton: "🧺",
+  linen: "🧺",
+};
+
 const SELECTED_BUSINESS_STORAGE_KEY = "washify_selected_business";
 
 export default function BookOrder() {
@@ -60,6 +114,18 @@ export default function BookOrder() {
     if (selectedCategory === "dry_clean") return Number(item.priceDryClean);
     if (selectedCategory === "iron") return Number(item.priceIron);
     return 0;
+  };
+
+  // Get appropriate emoji for item based on name
+  const getItemEmoji = (itemName: string): string => {
+    if (!itemName) return "🧺";
+    const lowerName = itemName.toLowerCase();
+    // Check for exact matches first
+    for (const [key, emoji] of Object.entries(ITEM_EMOJIS)) {
+      if (lowerName.includes(key)) return emoji;
+    }
+    // Return category default if no match
+    return CATEGORY_ICONS[selectedCategory] || "🧺";
   };
 
   const filteredItems = (apiItems ?? []).filter(item => {
@@ -172,16 +238,16 @@ export default function BookOrder() {
       </div>
 
       {/* Items Grid */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-32">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-44">
         {!businessId && !isLoading && (
           <div className="rounded-2xl bg-white p-5 text-center text-sm text-gray-500 shadow-sm">
-            Abhi koi active business available nahi hai.
+            No active laundry partners available at the moment.
           </div>
         )}
 
         {businessId && !isLoading && filteredItems.length === 0 && (
           <div className="rounded-2xl bg-white p-5 text-center text-sm text-gray-500 shadow-sm">
-            {selectedBusiness?.name ?? "Is business"} ne abhi tak koi items add nahi kiye hain.
+            {selectedBusiness?.name ?? "This partner"} has not added any items yet.
           </div>
         )}
 
@@ -210,7 +276,7 @@ export default function BookOrder() {
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl ${qty > 0 ? "bg-sky-100" : "bg-sky-50"}`}>
-                      {item.icon || CATEGORY_ICONS[item.category] || "🧺"}
+                      {getItemEmoji(item.name)}
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900 text-sm">{item.name}</p>
@@ -256,7 +322,7 @@ export default function BookOrder() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 px-5 pb-6 pt-3 bg-white border-t border-sky-100 shadow-lg"
+            className="sticky bottom-0 left-0 right-0 px-5 pb-6 pt-3 bg-white border-t border-sky-100 shadow-lg z-10"
           >
             <Button
               onClick={handleCheckout}

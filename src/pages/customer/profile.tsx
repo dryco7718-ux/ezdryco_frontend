@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { User, MapPin, Clock, LogOut, ChevronRight, Pencil, Save, Navigation } from "lucide-react";
+import { User, MapPin, Clock, LogOut, ChevronRight, Pencil, Save, Navigation, Info, ChevronDown, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -13,9 +13,8 @@ import { updateCustomerProfile } from "@/lib/profile-api";
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   requested: { label: "Placed", color: "bg-yellow-100 text-yellow-700" },
   accepted: { label: "Accepted", color: "bg-blue-100 text-blue-700" },
-  picked_up: { label: "Picked Up", color: "bg-indigo-100 text-indigo-700" },
-  cleaning: { label: "Cleaning", color: "bg-orange-100 text-orange-700" },
-  out_for_delivery: { label: "Out for Delivery", color: "bg-purple-100 text-purple-700" },
+  cleaning: { label: "In Process", color: "bg-orange-100 text-orange-700" },
+  ready: { label: "Ready", color: "bg-purple-100 text-purple-700" },
   delivered: { label: "Delivered", color: "bg-green-100 text-green-700" },
   cancelled: { label: "Cancelled", color: "bg-red-100 text-red-700" },
 };
@@ -27,9 +26,18 @@ export default function Profile() {
   const { data: ordersData } = useListOrders({ customerId }, { query: { enabled: !!customerId } as any });
   const { data: addresses, refetch: refetchAddresses } = useListAddresses(customerId, { query: { enabled: !!customerId } as any });
   const createAddress = useCreateAddress();
+
+  // Filter unique addresses by line1 + city combination
+  const uniqueAddresses = (addresses ?? []).filter((addr, index, self) =>
+    index === self.findIndex((a) =>
+      a.line1?.toLowerCase().trim() === addr.line1?.toLowerCase().trim() &&
+      a.city?.toLowerCase().trim() === addr.city?.toLowerCase().trim()
+    )
+  );
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [profileForm, setProfileForm] = useState({
     name: customer?.name ?? "",
     address: customer?.address ?? "",
@@ -43,7 +51,7 @@ export default function Profile() {
 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
-      setMessage("Browser current location support nahi deta.");
+      setMessage("Your browser does not support location access.");
       return;
     }
 
@@ -56,7 +64,7 @@ export default function Profile() {
           address: prev.address || "Current location selected",
         }));
       },
-      () => setMessage("Current location fetch nahi ho paayi. Manual address enter karo."),
+      () => setMessage("Unable to fetch current location. Please enter the address manually."),
       { enableHighAccuracy: true, timeout: 10000 },
     );
   };
@@ -64,7 +72,7 @@ export default function Profile() {
   const handleSaveProfile = async () => {
     if (!customerId) return;
     if (!profileForm.name.trim() || !profileForm.address.trim() || !profileForm.city.trim() || !profileForm.pincode.trim()) {
-      setMessage("Name, address, city aur pincode required hain.");
+      setMessage("Name, address, city, and pincode are required.");
       return;
     }
 
@@ -174,14 +182,24 @@ export default function Profile() {
 
         {/* Order History */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Order History</h3>
+          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Recent Orders</h3>
           <div className="space-y-3">
-            {orders.slice(0, 3).map(order => (
+            {orders.slice(0, 3).map((order, index) => (
               <Link key={order.id} href={`/customer/track/${order.id}`}>
                 <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 cursor-pointer hover:bg-gray-50 rounded-lg px-1">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Order #{order.id}</p>
-                    <p className="text-xs text-gray-500">{order.pickupDate}</p>
+                    <p className="text-sm font-medium text-gray-900">Order #{String(order.id).slice(-6).padStart(6, '0')}</p>
+                    <p className="text-xs text-gray-500">
+                      {(() => {
+                        const dateStr = order.pickupDate || order.createdAt;
+                        if (!dateStr) return '-';
+                        try {
+                          return new Date(dateStr).toLocaleDateString();
+                        } catch {
+                          return '-';
+                        }
+                      })()}
+                    </p>
                   </div>
                   <div className="text-right flex items-center gap-2">
                     <div>
@@ -203,7 +221,7 @@ export default function Profile() {
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4 text-red-500" /> Saved Addresses</h3>
           <div className="space-y-2">
-            {(addresses ?? []).map(addr => (
+            {uniqueAddresses.slice(0, 3).map(addr => (
               <div key={addr.id} className="flex items-start gap-3 py-2">
                 <div className="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-3.5 h-3.5 text-gray-600" />
@@ -217,46 +235,81 @@ export default function Profile() {
                 </div>
               </div>
             ))}
-            {(!addresses || addresses.length === 0) && (
+            {uniqueAddresses.length === 0 && (
               <p className="text-sm text-gray-400 text-center py-2">No addresses saved</p>
+            )}
+            {uniqueAddresses.length > 3 && (
+              <p className="text-xs text-gray-400 text-center pt-1">+{uniqueAddresses.length - 3} more addresses</p>
             )}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-          <h3 className="font-semibold text-gray-900">Use EzDry Like an App</h3>
-          <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
-            <li>Open EzDry in Chrome on your phone.</li>
-            <li>Tap browser menu and choose "Add to Home Screen".</li>
-            <li>Home screen icon se open karoge to app jaisa full-screen experience milega.</li>
-            <li>Notifications allow karo to order updates turant milenge.</li>
-          </ul>
-        </div>
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setAboutOpen((prev) => !prev)}
+            className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-gray-50"
+          >
+            <div className="flex items-center gap-2">
+              <Info className="w-4 h-4 text-sky-600" />
+              <span className="font-semibold text-gray-900">About EZ Dry Clean</span>
+            </div>
+            <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${aboutOpen ? "rotate-180" : ""}`} />
+          </button>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-          <h3 className="font-semibold text-gray-900">About EzDry</h3>
-          <p className="text-sm text-gray-600">
-            EzDry ek doorstep laundry and dry-cleaning platform hai jahan aap pickup schedule kar sakte ho,
-            order live track kar sakte ho, aur delivery status real-time me dekh sakte ho.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div className="rounded-xl bg-sky-50 p-3">
-              <p className="font-medium text-gray-800">Core Services</p>
-              <p className="text-gray-600 mt-1">Wash & Fold, Dry Cleaning, Steam Iron, Express Delivery</p>
+          {aboutOpen && (
+            <div className="px-4 pb-4 space-y-4 border-t border-gray-100">
+              <div className="pt-3">
+                <h4 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-sky-600" />
+                  Install as App
+                </h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+                  <li>Open EZ Dry Clean in Chrome on your mobile device</li>
+                  <li>Tap the menu and select "Add to Home Screen"</li>
+                  <li>Launch from home screen for app-like experience</li>
+                  <li>Enable notifications for order updates</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">About EZ Dry Clean</h4>
+                <p className="text-sm text-gray-600">
+                  EZ Dry Clean is your trusted laundry and dry cleaning partner. We provide doorstep pickup and delivery 
+                  services with real-time order tracking. Our verified local partners ensure quality cleaning for all your garments.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl bg-sky-50 p-3">
+                  <p className="font-medium text-gray-800">Our Services</p>
+                  <p className="text-gray-600 mt-1">Wash & Fold, Dry Cleaning, Steam Iron, Express Delivery</p>
+                </div>
+                <div className="rounded-xl bg-sky-50 p-3">
+                  <p className="font-medium text-gray-800">Coverage</p>
+                  <p className="text-gray-600 mt-1">Doorstep service through verified local partners</p>
+                </div>
+                <div className="rounded-xl bg-sky-50 p-3">
+                  <p className="font-medium text-gray-800">Quality Promise</p>
+                  <p className="text-gray-600 mt-1">Careful handling, premium cleaning, timely delivery</p>
+                </div>
+                <div className="rounded-xl bg-sky-50 p-3">
+                  <p className="font-medium text-gray-800">Support</p>
+                  <p className="text-gray-600 mt-1">24/7 customer support for all queries</p>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full rounded-xl border-sky-200 text-sky-600"
+                  onClick={() => navigate("/about")}
+                >
+                  Learn More About Us
+                </Button>
+              </div>
             </div>
-            <div className="rounded-xl bg-sky-50 p-3">
-              <p className="font-medium text-gray-800">Coverage</p>
-              <p className="text-gray-600 mt-1">Doorstep pickup and drop with business-partner network</p>
-            </div>
-            <div className="rounded-xl bg-sky-50 p-3">
-              <p className="font-medium text-gray-800">Safety</p>
-              <p className="text-gray-600 mt-1">Order history, status timeline, and secure account access</p>
-            </div>
-            <div className="rounded-xl bg-sky-50 p-3">
-              <p className="font-medium text-gray-800">Support</p>
-              <p className="text-gray-600 mt-1">Call support for pickup, delay, or delivery help anytime</p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Sign Out */}

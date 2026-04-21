@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
 
-const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EzDry";
+const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Washify";
 const CONTACT_PHONE = "+91 80533 17489";
 const CONTACT_EMAIL = "dryco7718@gmail.com";
 const SERVICE_AREA = "Narnaul";
@@ -66,12 +66,12 @@ export default function LandingPage() {
               <div className="inline-flex items-center gap-2 bg-sky-100 text-sky-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" /> Cloth Spa — Wear Fresh, Every Day
               </div>
-              <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+              <h1 className="text-[2.4rem] sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-[1.05] mb-6 tracking-tight">
                 Professional<br />
                 <span className="text-sky-500">Laundry</span> &<br />
                 Dry Cleaning
               </h1>
-              <p className="text-lg text-gray-500 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-500 mb-8 leading-relaxed max-w-xl">
                 Premium laundry & dry cleaning at your doorstep. Book a pickup, we'll do the rest — fresh clothes delivered back to you!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -248,7 +248,7 @@ export default function LandingPage() {
       <section id="blogs" className="py-20 bg-sky-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">EzDry Blogs</h2>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">Washify Blogs</h2>
             <p className="text-gray-500">Laundry tips, fabric care guides, and service updates.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">

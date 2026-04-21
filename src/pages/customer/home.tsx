@@ -10,9 +10,8 @@ import { getCurrentCustomer } from "@/lib/session";
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   requested: { label: "Order Placed", color: "bg-sky-50 text-sky-700" },
   accepted: { label: "Accepted", color: "bg-sky-100 text-sky-700" },
-  picked_up: { label: "Picked Up", color: "bg-blue-100 text-blue-700" },
-  cleaning: { label: "Cleaning", color: "bg-cyan-100 text-cyan-700" },
-  out_for_delivery: { label: "Out for Delivery", color: "bg-sky-100 text-sky-800" },
+  cleaning: { label: "In Process", color: "bg-cyan-100 text-cyan-700" },
+  ready: { label: "Ready", color: "bg-blue-100 text-blue-700" },
   delivered: { label: "Delivered", color: "bg-emerald-100 text-emerald-700" },
   cancelled: { label: "Cancelled", color: "bg-red-100 text-red-700" },
 };
@@ -74,7 +73,7 @@ export default function CustomerHome() {
           </div>
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-sky-100">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-gray-600">Order #{lastOrder.id}</span>
+              <span className="text-sm font-medium text-gray-600">Order #{String(lastOrder.id).slice(-6).padStart(6, '0')}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_LABELS[lastOrder.status]?.color ?? "bg-gray-100 text-gray-600"}`}>
                 {STATUS_LABELS[lastOrder.status]?.label ?? lastOrder.status}
               </span>

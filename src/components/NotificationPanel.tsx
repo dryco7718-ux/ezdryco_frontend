@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bell, X, Package, Tag, Info, CheckCircle2 } from "lucide-react";
 import { useListNotifications } from "@/lib/api-client-react";
 import { getCurrentBusiness, getCurrentCustomer } from "@/lib/session";
+import { useLocation } from "wouter";
 
 const LOCAL_READ_KEY = "ezdry_local_notification_reads";
 const LAST_BROWSER_ALERT_KEY = "ezdry_last_browser_notification";
@@ -12,15 +13,23 @@ const ICONS: Record<string, any> = {
   promo: Tag,
   system: Info,
   status: Package,
+  pickup: Package,
+  delivery: Package,
+  payment: Tag,
 };
 
 const ICON_COLORS: Record<string, string> = {
   order: "text-sky-500 bg-sky-50",
   promo: "text-orange-500 bg-orange-50",
   system: "text-gray-500 bg-gray-50",
+  status: "text-blue-500 bg-blue-50",
+  pickup: "text-green-500 bg-green-50",
+  delivery: "text-purple-500 bg-purple-50",
+  payment: "text-emerald-500 bg-emerald-50",
 };
 
 export function NotificationBell() {
+  const [, navigate] = useLocation();
   const [open, setOpen] = useState(false);
   const userId = getCurrentCustomer()?.id || getCurrentBusiness()?.userId;
   const { data, refetch } = useListNotifications(
@@ -83,12 +92,18 @@ export function NotificationBell() {
     if (lastShownId === latest.id) return;
 
     const show = () => {
-      const notification = new Notification(latest.title || "EzDry update", {
-        body: latest.message || "You have a new update",
+      const notificationType = latest.type || "order";
+      const typeLabel = notificationType.charAt(0).toUpperCase() + notificationType.slice(1);
+      const notification = new Notification(`${typeLabel}: ${latest.title || "EZ Dry Clean update"}`, {
+        body: latest.message || "You have a new notification",
         icon: "/ezdry-logo.svg",
+        badge: "/ezdry-logo.svg",
+        tag: latest.id,
+        requireInteraction: true,
       });
       notification.onclick = () => {
         window.focus();
+        navigate(latest.link || "/customer/home");
       };
       localStorage.setItem(LAST_BROWSER_ALERT_KEY, latest.id);
     };
@@ -165,8 +180,10 @@ export function NotificationBell() {
                 </div>
               ) : (
                 notifications.map((n: any) => {
-                  const Icon = ICONS[n.type] || Info;
-                  const iconClass = ICON_COLORS[n.type] || ICON_COLORS.system;
+                  const notificationType = (n.type || "system") as keyof typeof ICONS;
+                  const Icon = ICONS[notificationType] || Info;
+                  const iconClass = ICON_COLORS[notificationType] || ICON_COLORS.system;
+                  const typeLabel = notificationType.charAt(0).toUpperCase() + notificationType.slice(1);
                   return (
                     <button
                       key={n.id}

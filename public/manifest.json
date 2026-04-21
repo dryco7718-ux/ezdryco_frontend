@@ -1,0 +1,22 @@
+{
+  "name": "EZ Dry Clean",
+  "short_name": "EZ Dry",
+  "description": "Your trusted laundry and dry cleaning partner. Doorstep pickup and delivery with real-time tracking.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/ezdry-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "shopping"],
+  "lang": "en",
+  "dir": "ltr"
+}

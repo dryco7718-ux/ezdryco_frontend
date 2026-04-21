@@ -31,7 +31,7 @@ export function AdminLayout({ children }: Props) {
           <div className="flex items-center gap-2">
             <WashifyLogo size={34} iconOnly />
             <div>
-              <p className="font-bold text-gray-900 text-sm">EzDry Admin</p>
+              <p className="font-bold text-gray-900 text-sm">Washify Admin</p>
               <p className="text-xs text-gray-400">Super Admin Panel</p>
             </div>
           </div>
