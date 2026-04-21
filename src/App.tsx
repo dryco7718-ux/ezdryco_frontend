@@ -21,6 +21,7 @@ import CustomerTrack from "@/pages/customer/track";
 import CustomerReview from "@/pages/customer/review";
 import CustomerProfile from "@/pages/customer/profile";
 import CustomerOrders from "@/pages/customer/orders";
+import CustomerSelectItems from "@/pages/customer/select-items";
 
 import BusinessLogin from "@/pages/business/login";
 import BusinessRegister from "@/pages/business/register";
@@ -68,6 +69,9 @@ function Router() {
       </Route>
       <Route path="/customer/book">
         {() => <WithCustomerLayout><CustomerBook /></WithCustomerLayout>}
+      </Route>
+      <Route path="/customer/book/select-items">
+        {() => <WithCustomerLayout><CustomerSelectItems /></WithCustomerLayout>}
       </Route>
       <Route path="/customer/schedule">
         {() => <WithCustomerLayout><CustomerSchedule /></WithCustomerLayout>}
