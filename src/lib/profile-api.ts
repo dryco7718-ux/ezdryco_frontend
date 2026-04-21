@@ -24,9 +24,21 @@ function getApiBaseUrl() {
   return (configured || "/api").replace(/\/+$/, "");
 }
 
+import { getSessionToken } from "./session";
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = getSessionToken();
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(init?.headers as Record<string, string> ?? {}),
+  };
+  
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  
   const response = await fetch(`${getApiBaseUrl()}${path}`, {
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
+    headers,
     ...init,
   });
 

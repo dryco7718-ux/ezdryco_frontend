@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import {
   Shirt, Truck, Star, CheckCircle, MapPin, Clock, Shield,
   ChevronRight, Phone, Mail, Instagram, Facebook, Sparkles, BookOpenText
@@ -7,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
+import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Washify";
 const CONTACT_PHONE = "+91 80533 17489";
@@ -36,6 +38,18 @@ const TESTIMONIALS = [
 export default function LandingPage() {
   const [, navigate] = useLocation();
   const blogPosts = listBlogs(false).slice(0, 3);
+
+  // Auto-redirect logged in users to their home pages
+  useEffect(() => {
+    const customer = getCurrentCustomer();
+    const business = getCurrentBusiness();
+    
+    if (customer?.id) {
+      navigate("/customer/home");
+    } else if (business?.id) {
+      navigate("/business/dashboard");
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-white font-sans">

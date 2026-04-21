@@ -42,7 +42,16 @@ import AdminNotifications from "@/pages/admin/notifications";
 import AdminBlogs from "@/pages/admin/blogs";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 30000 } },
+  defaultOptions: { 
+    queries: { 
+      retry: 1, 
+      staleTime: 30000,
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      retry: 0,
+    },
+  },
 });
 
 function WithCustomerLayout({ children }: { children: React.ReactNode }) {
