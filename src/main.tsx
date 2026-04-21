@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
-import { setBaseUrl } from "@/lib/api-client-react";
+import { setBaseUrl, setAuthTokenGetter } from "@/lib/api-client-react";
+import { getSessionToken } from "@/lib/session";
 import App from "./App";
 import "./index.css";
 
@@ -54,6 +55,8 @@ try {
   if (apiBaseUrl) {
     setBaseUrl(apiBaseUrl);
   }
+  // Attach session token from localStorage to API requests
+  setAuthTokenGetter(() => getSessionToken());
 
   const rootElement = document.getElementById("root");
   if (!rootElement) {

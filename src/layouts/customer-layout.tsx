@@ -51,7 +51,7 @@ export function CustomerLayout({ children }: CustomerLayoutProps) {
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-sky-100 flex justify-around items-center px-6 py-4 pb-safe">
             <NavItem href="/customer/home" icon={Home} label="Home" active={location === "/customer/home"} />
             <NavItem href="/customer/book" icon={Search} label="Book" active={location.includes("/customer/book")} />
-            <NavItem href="/customer/profile" icon={Clock} label="Orders" active={location.includes("/customer/profile")} />
+            <NavItem href="/customer/orders" icon={Clock} label="Orders" active={location.includes("/customer/orders") || location.includes("/customer/track")} />
             <NavItem href="/customer/profile" icon={User} label="Profile" active={location === "/customer/profile"} />
           </div>
         )}

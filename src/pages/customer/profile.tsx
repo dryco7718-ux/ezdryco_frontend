@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { User, MapPin, Clock, LogOut, ChevronRight, Pencil, Save, Navigation, Info, ChevronDown, Smartphone } from "lucide-react";
+import { User, MapPin, LogOut, Pencil, Save, Navigation, Info, ChevronDown, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useListOrders, useListAddresses, useCreateAddress } from "@/lib/api-client-react";
+import { useListAddresses, useCreateAddress } from "@/lib/api-client-react";
 import { NotificationBell } from "@/components/NotificationPanel";
 import { clearCustomerSession, getCurrentCustomer, updateCustomerSession } from "@/lib/session";
 import { updateCustomerProfile } from "@/lib/profile-api";
@@ -23,7 +23,6 @@ export default function Profile() {
   const [, navigate] = useLocation();
   const customer = getCurrentCustomer();
   const customerId = customer?.id ?? "";
-  const { data: ordersData } = useListOrders({ customerId }, { query: { enabled: !!customerId } as any });
   const { data: addresses, refetch: refetchAddresses } = useListAddresses(customerId, { query: { enabled: !!customerId } as any });
   const createAddress = useCreateAddress();
 
@@ -47,7 +46,7 @@ export default function Profile() {
     lng: "",
   });
 
-  const orders = ordersData?.orders ?? [];
+  
 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -180,41 +179,13 @@ export default function Profile() {
           {message && <p className="text-xs text-blue-600 mt-3">{message}</p>}
         </div>
 
-        {/* Order History */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Recent Orders</h3>
-          <div className="space-y-3">
-            {orders.slice(0, 3).map((order, index) => (
-              <Link key={order.id} href={`/customer/track/${order.id}`}>
-                <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 cursor-pointer hover:bg-gray-50 rounded-lg px-1">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Order #{String(order.id).slice(-6).padStart(6, '0')}</p>
-                    <p className="text-xs text-gray-500">
-                      {(() => {
-                        const dateStr = order.pickupDate || order.createdAt;
-                        if (!dateStr) return '-';
-                        try {
-                          return new Date(dateStr).toLocaleDateString();
-                        } catch {
-                          return '-';
-                        }
-                      })()}
-                    </p>
-                  </div>
-                  <div className="text-right flex items-center gap-2">
-                    <div>
-                      <p className="text-sm font-bold text-gray-900">₹{order.total}</p>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_LABELS[order.status]?.color ?? "bg-gray-100 text-gray-600"}`}>
-                        {STATUS_LABELS[order.status]?.label ?? order.status}
-                      </span>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-            {orders.length === 0 && <p className="text-sm text-gray-400 text-center py-4">No orders yet</p>}
+        {/* Orders (moved to dedicated page) */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-gray-900">Orders</h3>
+            <p className="text-sm text-gray-500">Manage and track all your orders in one place.</p>
           </div>
+          <Link href="/customer/orders" className="text-sky-600 font-medium hover:underline">View Orders</Link>
         </div>
 
         {/* Addresses */}

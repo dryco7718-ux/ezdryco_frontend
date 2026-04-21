@@ -20,6 +20,7 @@ import CustomerPaymentSuccess from "@/pages/customer/payment-success";
 import CustomerTrack from "@/pages/customer/track";
 import CustomerReview from "@/pages/customer/review";
 import CustomerProfile from "@/pages/customer/profile";
+import CustomerOrders from "@/pages/customer/orders";
 
 import BusinessLogin from "@/pages/business/login";
 import BusinessRegister from "@/pages/business/register";
@@ -82,6 +83,9 @@ function Router() {
       </Route>
       <Route path="/customer/review/:id">
         {() => <WithCustomerLayout><CustomerReview /></WithCustomerLayout>}
+      </Route>
+      <Route path="/customer/orders">
+        {() => <WithCustomerLayout><CustomerOrders /></WithCustomerLayout>}
       </Route>
       <Route path="/customer/profile">
         {() => <WithCustomerLayout><CustomerProfile /></WithCustomerLayout>}
