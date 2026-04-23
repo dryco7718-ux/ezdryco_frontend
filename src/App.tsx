@@ -54,6 +54,9 @@ import HowItWorks from "@/pages/how-it-works";
 import Pricing from "@/pages/pricing";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import PrivacyPolicy from "@/pages/privacy";
+import TermsOfUse from "@/pages/terms";
+import RefundPolicy from "@/pages/refund";
 
 const queryClient = new QueryClient({
   defaultOptions: { 
@@ -90,6 +93,9 @@ function Router() {
       <Route path="/pricing" component={Pricing} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/terms" component={TermsOfUse} />
+      <Route path="/refund" component={RefundPolicy} />
       {/* SEO Pages — Narnaul */}
       <Route path="/laundry-service-narnaul" component={LaundryServiceNarnaul} />
       <Route path="/dry-cleaning-narnaul" component={DryCleaningNarnaul} />
