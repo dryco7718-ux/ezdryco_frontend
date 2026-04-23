@@ -48,6 +48,13 @@ import LaundryNearMeNarnaul from "@/pages/seo/laundry-near-me-narnaul";
 import BlogIndex from "@/pages/seo/blog-index";
 import BlogPost from "@/pages/seo/blog-post";
 
+// New Public Pages
+import Services from "@/pages/services";
+import HowItWorks from "@/pages/how-it-works";
+import Pricing from "@/pages/pricing";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+
 const queryClient = new QueryClient({
   defaultOptions: { 
     queries: { 
@@ -77,6 +84,12 @@ function Router() {
       {/* Main Landing Page */}
       <Route path="/" component={LandingPage} />
 
+      {/* New Public Pages */}
+      <Route path="/services" component={Services} />
+      <Route path="/how-it-works" component={HowItWorks} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
       {/* SEO Pages — Narnaul */}
       <Route path="/laundry-service-narnaul" component={LaundryServiceNarnaul} />
       <Route path="/dry-cleaning-narnaul" component={DryCleaningNarnaul} />

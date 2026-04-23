@@ -8,18 +8,21 @@ interface PublicLayoutProps {
 }
 
 const NAV_LINKS = [
-  { label: "Services", href: "/#services" },
-  { label: "Narnaul", href: "/laundry-service-narnaul" },
-  { label: "Dry Cleaning", href: "/dry-cleaning-narnaul" },
+  { label: "Services", href: "/services" },
+  { label: "How It Works", href: "/how-it-works" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];
 
 const FOOTER_LINKS = [
-  { label: "Laundry Service Narnaul", href: "/laundry-service-narnaul" },
-  { label: "Dry Cleaning Narnaul", href: "/dry-cleaning-narnaul" },
-  { label: "Laundry Near Me", href: "/laundry-near-me-narnaul" },
+  { label: "Services", href: "/services" },
+  { label: "How It Works", href: "/how-it-works" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Laundry Narnaul", href: "/laundry-service-narnaul" },
+  { label: "Dry Cleaning", href: "/dry-cleaning-narnaul" },
   { label: "Blog", href: "/blog" },
-  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function PublicLayout({ children }: PublicLayoutProps) {

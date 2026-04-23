@@ -39,6 +39,24 @@ const DEFAULT_BLOGS: BlogPost[] = [
     createdAt: new Date("2025-04-18").toISOString(),
     isPublished: true,
   },
+  {
+    id: "winter-laundry-narnaul",
+    title: "Winter Laundry Guide for Narnaul — How to Care for Woolens & Heavy Fabrics",
+    excerpt: "Narnaul winters demand special care for blankets, shawls, and woolen coats. Here's the complete guide to keeping your winter wardrobe fresh.",
+    content: "Seasonal guide on caring for heavy winter garments in Narnaul's climate — from storage tips to dry cleaning schedules.",
+    author: "EZDRY Team",
+    createdAt: new Date("2025-04-15").toISOString(),
+    isPublished: true,
+  },
+  {
+    id: "same-day-laundry-narnaul",
+    title: "Same-Day Laundry in Narnaul — Is It Worth the Express Surcharge?",
+    excerpt: "EZDRY's Express Same-Day service gets your clothes back by 7 PM. We explain when it's worth it and how to make the most of it.",
+    content: "Complete guide to EZDRY's same-day express laundry in Narnaul — pricing, booking tips, and what to expect.",
+    author: "EZDRY Team",
+    createdAt: new Date("2025-04-12").toISOString(),
+    isPublished: true,
+  },
 ];
 
 function readRaw(): BlogPost[] {
