@@ -1,10 +1,9 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { ChevronRight, Clock, MapPin } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
-import { WashifyLogo } from "@/components/Logo";
-import { Button } from "@/components/ui/button";
 import { BlogCard } from "@/components/BlogCard";
+import PublicLayout from "@/layouts/public-layout";
 
 export const SEO_BLOGS = [
   {
@@ -52,25 +51,10 @@ export default function BlogIndex() {
   });
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* NAVBAR — matches landing page */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-sky-100">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <WashifyLogo size={36} />
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
-            <button onClick={() => navigate("/#services")} className="hover:text-sky-500 transition-colors">Services</button>
-            <button onClick={() => navigate("/blog")} className="text-sky-500 font-semibold transition-colors">Blog</button>
-            <button onClick={() => navigate("/laundry-service-narnaul")} className="hover:text-sky-500 transition-colors">Narnaul</button>
-          </div>
-          <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
-            Book Now
-          </Button>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="pt-28 pb-14 bg-gradient-to-br from-sky-50 via-white to-sky-50">
-        <div className="max-w-6xl mx-auto px-6">
+    <PublicLayout>
+      {/* BREADCRUMB + HERO */}
+      <section className="bg-gradient-to-br from-sky-50 to-white py-14 px-5">
+        <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
               <button onClick={() => navigate("/")} className="hover:text-sky-500">Home</button>
@@ -87,7 +71,7 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      {/* BLOG CARDS using shared BlogCard */}
+      {/* BLOG CARDS */}
       <section className="py-14">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-6">
@@ -103,47 +87,14 @@ export default function BlogIndex() {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-extrabold text-gray-900 mb-3">Ready to Try EZDRY in Narnaul?</h2>
           <p className="text-gray-500 mb-6">Professional laundry pickup across Narnaul. Starting ₹199.</p>
-          <Button onClick={() => navigate("/customer/register")}
-            className="h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-bold px-8 text-sm">
-            Book Your First Pickup <ChevronRight className="w-4 h-4 ml-1" />
-          </Button>
+          <button
+            onClick={() => navigate("/customer/register")}
+            className="h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-bold px-8 text-sm inline-flex items-center gap-2 transition-colors"
+          >
+            Book Your First Pickup <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </section>
-
-      {/* INTERNAL LINKS */}
-      <section className="py-8 bg-sky-50 border-t border-sky-100">
-        <div className="max-w-6xl mx-auto px-6">
-          <p className="text-sm font-semibold text-gray-500 mb-4">EZDRY Services in Narnaul</p>
-          <div className="flex flex-wrap gap-3">
-            {[
-              { label: "Laundry Service Narnaul", href: "/laundry-service-narnaul" },
-              { label: "Dry Cleaning Narnaul", href: "/dry-cleaning-narnaul" },
-              { label: "Laundry Near Me Narnaul", href: "/laundry-near-me-narnaul" },
-            ].map((link) => (
-              <button key={link.href} onClick={() => navigate(link.href)}
-                className="flex items-center gap-1.5 text-sm text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-full px-4 py-1.5 transition-colors">
-                <MapPin className="w-3.5 h-3.5" /> {link.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER — matches landing page */}
-      <footer className="bg-gray-900 text-white py-10">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <WashifyLogo size={32} textColor="text-white" />
-          </div>
-          <div className="flex items-center gap-6 text-gray-400 text-sm">
-            <button onClick={() => navigate("/")} className="hover:text-white">Home</button>
-            <button onClick={() => navigate("/laundry-service-narnaul")} className="hover:text-white">Narnaul</button>
-            <button onClick={() => navigate("/dry-cleaning-narnaul")} className="hover:text-white">Dry Cleaning</button>
-            <button onClick={() => navigate("/blog")} className="hover:text-white">Blog</button>
-          </div>
-          <p className="text-gray-500 text-sm">© 2025 EZDRY. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+    </PublicLayout>
   );
 }

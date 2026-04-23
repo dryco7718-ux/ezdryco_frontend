@@ -45,7 +45,7 @@ export default function PortalSelector() {
         <div className="flex items-center justify-center gap-2 mb-4">
           <WashifyLogo size={42} />
         </div>
-        <p className="text-base text-sky-600 font-medium mb-1">Washify - Cloth Spa, Wear Fresh Every Day</p>
+        <p className="text-base text-sky-600 font-medium mb-1">EZDRY — Wear Fresh, Every Day</p>
         <p className="text-sm text-gray-500 max-w-md mx-auto">
           Select a portal to experience the complete Laundry & Dry Cleaning platform.
         </p>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
+import PublicLayout from "@/layouts/public-layout";
 
 const FAQS = [
   { q: "Which areas do you serve in Narnaul?", a: "We serve all localities within Narnaul including Old Narnaul, New Colony, Mandi area, Bus Stand area, and surrounding neighbourhoods in Mahendragarh district." },
@@ -30,20 +31,7 @@ export default function LaundryServiceNarnaul() {
   });
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      <nav className="bg-white border-b border-sky-100 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
-          <button onClick={() => navigate("/")} className="font-extrabold text-xl text-sky-600 tracking-tight">EZDRY</button>
-          <div className="hidden md:flex gap-5 text-sm text-gray-600">
-            <button onClick={() => navigate("/dry-cleaning-narnaul")} className="hover:text-sky-500">Dry Cleaning</button>
-            <button onClick={() => navigate("/laundry-near-me-narnaul")} className="hover:text-sky-500">Near Me</button>
-            <button onClick={() => navigate("/blog")} className="hover:text-sky-500">Blog</button>
-          </div>
-          <Button onClick={() => navigate("/customer/register")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
-            Book Pickup
-          </Button>
-        </div>
-      </nav>
+    <PublicLayout>
 
       {/* HERO */}
       <section className="bg-gradient-to-br from-sky-50 to-white py-16 px-5">
@@ -217,18 +205,7 @@ export default function LaundryServiceNarnaul() {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-gray-400 py-8 px-5 text-center text-sm">
-        <div className="max-w-5xl mx-auto space-y-3">
-          <p className="text-white font-semibold">EZDRY — Laundry & Dry Cleaning Narnaul</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button onClick={() => navigate("/dry-cleaning-narnaul")} className="hover:text-white">Dry Cleaning</button>
-            <button onClick={() => navigate("/laundry-near-me-narnaul")} className="hover:text-white">Laundry Near Me</button>
-            <button onClick={() => navigate("/blog")} className="hover:text-white">Blog</button>
-            <button onClick={() => navigate("/")} className="hover:text-white">Home</button>
-          </div>
-          <p>© 2025 EZDRY. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+
+    </PublicLayout>
   );
 }

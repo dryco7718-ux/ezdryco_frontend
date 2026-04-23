@@ -2,15 +2,15 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import {
-  Shirt, Truck, Star, CheckCircle, MapPin, Clock, Shield,
-  ChevronRight, Phone, Mail, Instagram, Facebook, Sparkles, BookOpenText
+  Truck, Star, CheckCircle, MapPin,
+  ChevronRight, Sparkles, BookOpenText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
 import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
 import { useSEO } from "@/hooks/useSEO";
 import { BlogCard } from "@/components/BlogCard";
+import PublicLayout from "@/layouts/public-layout";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EZDRY";
 const CONTACT_PHONE = "+91 80533 17489";
@@ -59,26 +59,9 @@ export default function LandingPage() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-sky-100">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <WashifyLogo size={36} />
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-600">
-            <a href="#services" className="hover:text-sky-500 transition-colors">Services</a>
-            <a href="#how" className="hover:text-sky-500 transition-colors">How It Works</a>
-            <a href="#reviews" className="hover:text-sky-500 transition-colors">Reviews</a>
-            <button onClick={() => navigate("/blog")} className="hover:text-sky-500 transition-colors">Blog</button>
-            <a href="#contact" className="hover:text-sky-500 transition-colors">Contact</a>
-          </div>
-          <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
-            Login / Register
-          </Button>
-        </div>
-      </nav>
-
+    <PublicLayout>
       {/* HERO */}
-      <section className="pt-28 pb-20 bg-gradient-to-br from-sky-50 via-white to-sky-50 relative overflow-hidden">
+      <section className="pt-12 pb-20 bg-gradient-to-br from-sky-50 via-white to-sky-50 relative overflow-hidden">
         <div className="absolute top-20 right-0 w-96 h-96 bg-sky-100 rounded-full blur-3xl opacity-50 -z-0" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-200 rounded-full blur-3xl opacity-30 -z-0" />
         <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -376,51 +359,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-gray-900 text-white py-10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center">
-                <Shirt className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <span className="font-bold text-lg">{BRAND_NAME}</span>
-                <p className="text-gray-400 text-xs">Cloth Spa — Wear Fresh, Every Day</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6 text-gray-400 text-sm">
-              <a href="#" className="hover:text-white">Privacy Policy</a>
-              <a href="#" className="hover:text-white">Terms of Use</a>
-              <a href="#" className="hover:text-white">Refund Policy</a>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <a href="https://instagram.com/washify" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="https://facebook.com/washify" target="_blank" rel="noreferrer" aria-label="Facebook" className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-sky-500 transition-colors">
-                <Facebook className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-            <div>
-              <p className="text-gray-300 text-sm font-semibold">Contact Us</p>
-              <p className="text-gray-500 text-xs">Phone: {CONTACT_PHONE} • Email: {CONTACT_EMAIL}</p>
-            </div>
-            <p className="text-gray-500 text-sm">© 2025 {BRAND_NAME}. All rights reserved.</p>
-            <button
-              onClick={() => navigate("/admin/login")}
-              className="text-gray-700 hover:text-gray-500 text-xs transition-colors"
-            >
-              Admin
-            </button>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </PublicLayout>
   );
 }

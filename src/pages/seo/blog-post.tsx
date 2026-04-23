@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Clock, Calendar } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 import { SEO_BLOGS } from "./blog-index";
-import { WashifyLogo } from "@/components/Logo";
-import { Button } from "@/components/ui/button";
+import PublicLayout from "@/layouts/public-layout";
 
 const BLOG_CONTENT: Record<string, {
   seoTitle: string;
@@ -87,20 +86,8 @@ export default function BlogPost() {
   useSEO({ title: meta.seoTitle, description: meta.seoDesc, canonical: `https://ezdry.in/blog/${slug}` });
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-sky-100">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <WashifyLogo size={36} />
-          <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-            <button onClick={() => navigate("/blog")} className="hover:text-sky-500 flex items-center gap-1"><ChevronLeft className="w-3.5 h-3.5" /> All Articles</button>
-          </div>
-          <Button onClick={() => navigate("/customer/register")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
-            Book Pickup
-          </Button>
-        </div>
-      </nav>
-
-      <article className="max-w-3xl mx-auto px-5 pt-28 pb-12">
+    <PublicLayout>
+      <article className="max-w-3xl mx-auto px-5 pt-10 pb-12">
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
           <button onClick={() => navigate("/")} className="hover:text-sky-500">Home</button>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -169,29 +156,6 @@ export default function BlogPost() {
           </div>
         </div>
       </article>
-
-      <section className="py-14 px-5 bg-sky-500">
-        <div className="max-w-3xl mx-auto text-center text-white">
-          <h2 className="text-2xl font-extrabold mb-3">Book Laundry in Narnaul</h2>
-          <p className="text-sky-100 mb-6">Professional pickup across Narnaul. Starting ₹199.</p>
-          <button onClick={() => navigate("/customer/register")}
-            className="h-12 bg-white text-sky-600 hover:bg-sky-50 rounded-2xl font-bold px-8 text-sm transition-colors inline-flex items-center gap-2">
-            Book Pickup Now <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      </section>
-
-      <footer className="bg-gray-900 text-white py-10">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <WashifyLogo size={32} textColor="text-white" />
-          <div className="flex items-center gap-6 text-gray-400 text-sm">
-            <button onClick={() => navigate("/blog")} className="hover:text-white">All Articles</button>
-            <button onClick={() => navigate("/laundry-service-narnaul")} className="hover:text-white">Narnaul</button>
-            <button onClick={() => navigate("/")} className="hover:text-white">Home</button>
-          </div>
-          <p className="text-gray-500 text-sm">© 2025 EZDRY. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+    </PublicLayout>
   );
 }

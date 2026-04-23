@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useSendNotification } from "@/lib/api-client-react";
 
 const TEMPLATES = [
-  { title: "Platform Maintenance", message: "Washify will be under maintenance on May 15, 12–2 AM. Services will resume promptly." },
+  { title: "Platform Maintenance", message: "EZDRY will be under maintenance on May 15, 12–2 AM. Services will resume promptly." },
   { title: "New Feature: Express", message: "Express 24-hour service is now available! Book your express order today." },
-  { title: "Welcome to Washify", message: "Welcome to Washify! Enjoy 50% off your first order with code FIRST50." },
-  { title: "Review Request", message: "Enjoying Washify? Please rate us on the App Store — your feedback means a lot!" },
+  { title: "Welcome to EZDRY", message: "Welcome to EZDRY! Enjoy 50% off your first order with code FIRST50." },
+  { title: "Review Request", message: "Enjoying EZDRY? Please rate us on the App Store — your feedback means a lot!" },
 ];
 
 export default function AdminNotifications() {
