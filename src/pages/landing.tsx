@@ -2,8 +2,8 @@ import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import {
-  Truck, Star, CheckCircle, MapPin,
-  ChevronRight, Sparkles, BookOpenText
+  Shirt, Truck, Star, CheckCircle, MapPin,
+  ChevronRight, Sparkles, BookOpenText, Phone, Mail
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listBlogs } from "@/lib/blogs";
