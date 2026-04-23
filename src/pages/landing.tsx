@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
 import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
+import { useSEO } from "@/hooks/useSEO";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Washify";
 const CONTACT_PHONE = "+91 80533 17489";
@@ -39,6 +40,11 @@ export default function LandingPage() {
   const [, navigate] = useLocation();
   const blogPosts = listBlogs(false).slice(0, 3);
 
+  useSEO({
+    title: "Washify — Laundry & Dry Cleaning Service in Delhi | Free Pickup",
+    description: "Book laundry, dry cleaning & ironing in Delhi online. Free doorstep pickup. Trusted laundry partners. Clothes back in 24–48 hrs. Starting ₹199.",
+  });
+
   // Auto-redirect logged in users to their home pages
   useEffect(() => {
     const customer = getCurrentCustomer();
@@ -61,7 +67,7 @@ export default function LandingPage() {
             <a href="#services" className="hover:text-sky-500 transition-colors">Services</a>
             <a href="#how" className="hover:text-sky-500 transition-colors">How It Works</a>
             <a href="#reviews" className="hover:text-sky-500 transition-colors">Reviews</a>
-            <a href="#blogs" className="hover:text-sky-500 transition-colors">Blogs</a>
+            <button onClick={() => navigate("/blog")} className="hover:text-sky-500 transition-colors">Blog</button>
             <a href="#contact" className="hover:text-sky-500 transition-colors">Contact</a>
           </div>
           <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
@@ -343,6 +349,35 @@ export default function LandingPage() {
               <p className="text-gray-500 text-sm">{SERVICE_AREA}</p>
               <p className="text-gray-400 text-xs">Local pickup and delivery</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INTERNAL LINKS — LOCATION PAGES */}
+      <section className="py-10 bg-sky-50 border-t border-sky-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-sm font-semibold text-gray-500 mb-4">Laundry Service in Delhi — Serving All Areas</p>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { label: "Delhi", href: "/laundry-service-delhi" },
+              { label: "South Delhi", href: "/laundry-service-south-delhi" },
+              { label: "Saket", href: "/laundry-service-saket" },
+              { label: "Lajpat Nagar", href: "/laundry-service-lajpat-nagar" },
+            ].map((area) => (
+              <button
+                key={area.label}
+                onClick={() => navigate(area.href)}
+                className="flex items-center gap-1.5 text-sm text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-full px-4 py-1.5 transition-colors"
+              >
+                <MapPin className="w-3.5 h-3.5" /> {area.label}
+              </button>
+            ))}
+            <button
+              onClick={() => navigate("/blog")}
+              className="flex items-center gap-1.5 text-sm text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-full px-4 py-1.5 transition-colors"
+            >
+              <BookOpenText className="w-3.5 h-3.5" /> Laundry Tips Blog
+            </button>
           </div>
         </div>
       </section>
