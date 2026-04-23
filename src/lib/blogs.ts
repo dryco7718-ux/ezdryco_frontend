@@ -13,13 +13,30 @@ const BLOG_STORAGE_KEY = "ezdry_blog_posts";
 
 const DEFAULT_BLOGS: BlogPost[] = [
   {
-    id: "welcome-ezdry",
-    title: "Welcome to EzDry",
-    excerpt: "Fast pickup, careful cleaning, and reliable delivery for every home.",
-    content:
-      "EzDry is built for busy families and professionals. Book in minutes, track in real-time, and get freshly cleaned clothes delivered to your doorstep.",
-    author: "EzDry Team",
-    createdAt: new Date().toISOString(),
+    id: "best-laundry-service-narnaul",
+    title: "Best Laundry Service in Narnaul — EZDRY vs Local Dhobi",
+    excerpt: "Is the local dhobi still the best option in Narnaul? We compare traditional laundry services with EZDRY's doorstep model on price, quality, and reliability.",
+    content: "Full comparison of EZDRY and local dhobi services in Narnaul with pricing, quality, and reliability analysis.",
+    author: "EZDRY Team",
+    createdAt: new Date("2025-04-22").toISOString(),
+    isPublished: true,
+  },
+  {
+    id: "laundry-vs-dry-cleaning-narnaul",
+    title: "Laundry vs Dry Cleaning in Narnaul — Which Does Your Clothes Need?",
+    excerpt: "Kurtas, suits, woolen shawls — not everything should go in the wash. Here's how to decide for every garment in your Narnaul wardrobe.",
+    content: "Expert guide on when to use regular laundry vs dry cleaning for different fabrics common in Narnaul.",
+    author: "EZDRY Team",
+    createdAt: new Date("2025-04-20").toISOString(),
+    isPublished: true,
+  },
+  {
+    id: "affordable-laundry-narnaul",
+    title: "Affordable Laundry Service in Narnaul — Prices, Plans & What to Expect",
+    excerpt: "How much should laundry actually cost in Narnaul? We break down fair prices for wash & fold, dry cleaning, and ironing.",
+    content: "Complete pricing guide for laundry services in Narnaul including wash & fold, dry cleaning, and ironing rates.",
+    author: "EZDRY Team",
+    createdAt: new Date("2025-04-18").toISOString(),
     isPublished: true,
   },
 ];

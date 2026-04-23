@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Clock, Calendar } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 import { SEO_BLOGS } from "./blog-index";
+import { WashifyLogo } from "@/components/Logo";
+import { Button } from "@/components/ui/button";
 
 const BLOG_CONTENT: Record<string, {
   seoTitle: string;
@@ -86,17 +88,19 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      <nav className="bg-white border-b border-sky-100 sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
-          <button onClick={() => navigate("/")} className="font-extrabold text-xl text-sky-600">EZDRY</button>
-          <button onClick={() => navigate("/customer/register")}
-            className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 py-2 text-sm font-semibold transition-colors">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-sky-100">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <WashifyLogo size={36} />
+          <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
+            <button onClick={() => navigate("/blog")} className="hover:text-sky-500 flex items-center gap-1"><ChevronLeft className="w-3.5 h-3.5" /> All Articles</button>
+          </div>
+          <Button onClick={() => navigate("/customer/register")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
             Book Pickup
-          </button>
+          </Button>
         </div>
       </nav>
 
-      <article className="max-w-3xl mx-auto px-5 py-12">
+      <article className="max-w-3xl mx-auto px-5 pt-28 pb-12">
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
           <button onClick={() => navigate("/")} className="hover:text-sky-500">Home</button>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -177,13 +181,16 @@ export default function BlogPost() {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-gray-400 py-8 px-5 text-center text-sm">
-        <div className="flex flex-wrap justify-center gap-4 mb-3">
-          <button onClick={() => navigate("/blog")} className="hover:text-white">All Articles</button>
-          <button onClick={() => navigate("/laundry-service-narnaul")} className="hover:text-white">Narnaul Laundry</button>
-          <button onClick={() => navigate("/")} className="hover:text-white">Home</button>
+      <footer className="bg-gray-900 text-white py-10">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <WashifyLogo size={32} textColor="text-white" />
+          <div className="flex items-center gap-6 text-gray-400 text-sm">
+            <button onClick={() => navigate("/blog")} className="hover:text-white">All Articles</button>
+            <button onClick={() => navigate("/laundry-service-narnaul")} className="hover:text-white">Narnaul</button>
+            <button onClick={() => navigate("/")} className="hover:text-white">Home</button>
+          </div>
+          <p className="text-gray-500 text-sm">© 2025 EZDRY. All rights reserved.</p>
         </div>
-        <p>© 2025 EZDRY. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -10,6 +10,7 @@ import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
 import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
 import { useSEO } from "@/hooks/useSEO";
+import { BlogCard } from "@/components/BlogCard";
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EZDRY";
 const CONTACT_PHONE = "+91 80533 17489";
@@ -272,21 +273,16 @@ export default function LandingPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {blogPosts.map((post) => (
-              <article key={post.id} className="bg-white rounded-3xl border border-sky-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-40 bg-gradient-to-br from-sky-300 to-sky-500 flex items-center justify-center">
-                  {post.coverImageUrl ? (
-                    <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <BookOpenText className="w-12 h-12 text-white" />
-                  )}
-                </div>
-                <div className="p-5">
-                  <p className="text-xs text-sky-600 font-semibold mb-2">{new Date(post.createdAt).toLocaleDateString()} • {post.author}</p>
-                  <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{post.title}</h3>
-                  <p className="text-sm text-gray-500 line-clamp-3">{post.excerpt}</p>
-                </div>
-              </article>
+              <BlogCard key={post.id} {...post} />
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <button
+              onClick={() => navigate("/blog")}
+              className="inline-flex items-center gap-2 text-sky-600 font-semibold hover:text-sky-700 transition-colors"
+            >
+              View All Articles <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>

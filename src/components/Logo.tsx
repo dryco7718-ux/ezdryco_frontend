@@ -13,7 +13,7 @@ export function WashifyLogo({
   textColor = "text-gray-900",
   iconOnly = false,
 }: LogoProps) {
-  const brandName = import.meta.env.VITE_BRAND_NAME || "Washify";
+  const brandName = import.meta.env.VITE_BRAND_NAME || "EZDRY";
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
