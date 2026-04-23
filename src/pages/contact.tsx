@@ -2,6 +2,14 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
+
+const CONTACT_FAQS = [
+  { q: "Do you serve my area in Narnaul?", a: "We cover all major localities in Narnaul. If unsure, just book and enter your address — our system will confirm coverage." },
+  { q: "How quickly do you respond to messages?", a: "WhatsApp and phone calls are answered during business hours (8 AM–8 PM) within minutes. Email responses within 24 hours." },
+  { q: "Can I cancel or reschedule a pickup?", a: "Yes. Cancel or reschedule up to 1 hour before the pickup time with no charge. Message us on WhatsApp or call." },
+  { q: "Do you have a physical store in Narnaul?", a: "EZDRY is a doorstep service — no store visit needed. We come to your home or office for pickup and delivery." },
+];
 
 export default function Contact() {
   useSEO({
@@ -79,25 +87,11 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-6 bg-sky-50">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center">Common Questions</h2>
-          <div className="space-y-4">
-            {[
-              { q: "Do you serve my area in Narnaul?", a: "We cover all major localities in Narnaul. If unsure, just book and enter your address — our system will confirm coverage." },
-              { q: "How quickly do you respond to messages?", a: "WhatsApp and phone calls are answered during business hours (8 AM–8 PM) within minutes. Email responses within 24 hours." },
-              { q: "Can I cancel or reschedule a pickup?", a: "Yes. Cancel or reschedule up to 1 hour before the pickup time with no charge. Message us on WhatsApp or call." },
-              { q: "Do you have a physical store in Narnaul?", a: "EZDRY is a doorstep service — no store visit needed. We come to your home or office for pickup and delivery." },
-            ].map((faq, i) => (
-              <div key={i} className="rounded-2xl bg-white border border-sky-100 p-5 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQAccordion
+        items={CONTACT_FAQS}
+        heading="Common Questions"
+        bg="bg-sky-50"
+      />
     </PublicLayout>
   );
 }

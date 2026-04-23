@@ -4,6 +4,7 @@ import { CheckCircle, ChevronRight, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
 
 const PLANS = [
   {
@@ -176,20 +177,11 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center">Pricing FAQs</h2>
-          <div className="space-y-4">
-            {FAQS.map((faq, i) => (
-              <div key={i} className="rounded-2xl border border-sky-100 bg-sky-50 p-5">
-                <h3 className="font-bold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQAccordion
+        items={FAQS}
+        heading="Pricing FAQs"
+        bg="bg-white"
+      />
 
       {/* CTA */}
       <section className="py-16 px-6 bg-sky-500">

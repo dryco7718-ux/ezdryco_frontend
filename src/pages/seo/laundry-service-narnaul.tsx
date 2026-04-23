@@ -4,6 +4,7 @@ import { CheckCircle, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
 
 const FAQS = [
   { q: "Which areas do you serve in Narnaul?", a: "We serve all localities within Narnaul including Old Narnaul, New Colony, Mandi area, Bus Stand area, and surrounding neighbourhoods in Mahendragarh district." },
@@ -178,20 +179,11 @@ export default function LaundryServiceNarnaul() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-5 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-10">Frequently Asked Questions — Narnaul Laundry</h2>
-          <div className="space-y-4">
-            {FAQS.map((faq, i) => (
-              <div key={i} className="rounded-2xl border border-sky-100 p-5 bg-sky-50">
-                <h3 className="font-bold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQAccordion
+        items={FAQS}
+        heading="Frequently Asked Questions — Narnaul Laundry"
+        bg="bg-white"
+      />
 
       {/* CTA */}
       <section className="py-16 px-5 bg-sky-500">

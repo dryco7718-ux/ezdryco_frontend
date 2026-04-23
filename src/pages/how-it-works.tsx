@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
 
 const STEPS = [
   {
@@ -103,20 +104,11 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-6 bg-sky-50">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-10 text-center">Questions About the Process</h2>
-          <div className="space-y-4">
-            {FAQS.map((faq, i) => (
-              <div key={i} className="rounded-2xl bg-white border border-sky-100 p-5 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQAccordion
+        items={FAQS}
+        heading="Questions About the Process"
+        bg="bg-sky-50"
+      />
 
       {/* CTA */}
       <section className="py-16 px-6 bg-sky-500">

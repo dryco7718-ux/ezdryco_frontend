@@ -4,6 +4,15 @@ import { CheckCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
+
+const DRY_CLEAN_FAQS = [
+  { q: "How long does dry cleaning take in Narnaul?", a: "Standard: 48–72 hours from pickup. Heavy items like blankets and curtains: allow up to 96 hours." },
+  { q: "Is dry cleaning safe for my silk saree?", a: "Yes — silk responds well to dry cleaning and poorly to water washing. We recommend dry cleaning for all silk garments." },
+  { q: "Can dry cleaning remove all stains?", a: "Most stains are removed successfully. Old or dye-based stains may not fully come out. We inform you before returning the garment." },
+  { q: "What should I tell you before pickup?", a: "Mention any specific stains or concerns in the order notes or tell our pickup agent. It helps us pre-treat correctly." },
+  { q: "Do you dry clean wedding outfits in Narnaul?", a: "Yes. For sherwanis, lehengas, and bridal wear — book at least 7 days before the event." },
+];
 
 const DRY_CLEAN_ITEMS = [
   { icon: "🤵", cat: "Formal Wear", items: ["Suit (2-piece) — ₹280", "Blazer — ₹180", "Formal trousers — ₹120", "Waistcoat — ₹100"] },
@@ -128,26 +137,11 @@ export default function DryCleaningNarnaul() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 px-5 bg-sky-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Dry Cleaning FAQ — Narnaul</h2>
-          <div className="space-y-4">
-            {[
-              { q: "How long does dry cleaning take in Narnaul?", a: "Standard: 48–72 hours from pickup. Heavy items like blankets and curtains: allow up to 96 hours." },
-              { q: "Is dry cleaning safe for my silk saree?", a: "Yes — silk responds well to dry cleaning and poorly to water washing. We recommend dry cleaning for all silk garments." },
-              { q: "Can dry cleaning remove all stains?", a: "Most stains are removed successfully. Old or dye-based stains may not fully come out. We inform you before returning the garment." },
-              { q: "What should I tell you before pickup?", a: "Mention any specific stains or concerns in the order notes or tell our pickup agent. It helps us pre-treat correctly." },
-              { q: "Do you dry clean wedding outfits in Narnaul?", a: "Yes. For sherwanis, lehengas, and bridal wear — book at least 7 days before the event." },
-            ].map((faq, i) => (
-              <div key={i} className="rounded-2xl border border-sky-100 p-5 bg-white">
-                <h3 className="font-bold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-600 text-sm">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQAccordion
+        items={DRY_CLEAN_FAQS}
+        heading="Dry Cleaning FAQ — Narnaul"
+        bg="bg-sky-50"
+      />
 
       {/* CTA */}
       <section className="py-16 px-5 bg-sky-500">
