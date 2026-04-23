@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { WashifyLogo } from "@/components/Logo";
 import { listBlogs } from "@/lib/blogs";
 import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
+import { useSEO } from "@/hooks/useSEO";
 
-const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "Washify";
+const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EZDRY";
 const CONTACT_PHONE = "+91 80533 17489";
 const CONTACT_EMAIL = "dryco7718@gmail.com";
 const SERVICE_AREA = "Narnaul";
@@ -39,6 +40,11 @@ export default function LandingPage() {
   const [, navigate] = useLocation();
   const blogPosts = listBlogs(false).slice(0, 3);
 
+  useSEO({
+    title: "Best Laundry & Dry Cleaning Service in Narnaul | Free Pickup — EZDRY",
+    description: "Book laundry, dry cleaning & ironing in Narnaul, Haryana. Free doorstep pickup. Clothes back in 24–48 hrs. Starting ₹199. EZDRY — Narnaul’s trusted laundry service.",
+  });
+
   // Auto-redirect logged in users to their home pages
   useEffect(() => {
     const customer = getCurrentCustomer();
@@ -61,7 +67,7 @@ export default function LandingPage() {
             <a href="#services" className="hover:text-sky-500 transition-colors">Services</a>
             <a href="#how" className="hover:text-sky-500 transition-colors">How It Works</a>
             <a href="#reviews" className="hover:text-sky-500 transition-colors">Reviews</a>
-            <a href="#blogs" className="hover:text-sky-500 transition-colors">Blogs</a>
+            <button onClick={() => navigate("/blog")} className="hover:text-sky-500 transition-colors">Blog</button>
             <a href="#contact" className="hover:text-sky-500 transition-colors">Contact</a>
           </div>
           <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 text-sm">
@@ -81,9 +87,8 @@ export default function LandingPage() {
                 <Sparkles className="w-4 h-4" /> Cloth Spa — Wear Fresh, Every Day
               </div>
               <h1 className="text-[2.4rem] sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-[1.05] mb-6 tracking-tight">
-                Professional<br />
-                <span className="text-sky-500">Laundry</span> &<br />
-                Dry Cleaning
+                Laundry & Dry Cleaning<br />
+                <span className="text-sky-500">Service in Narnaul</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-500 mb-8 leading-relaxed max-w-xl">
                 Premium laundry & dry cleaning at your doorstep. Book a pickup, we'll do the rest — fresh clothes delivered back to you!
@@ -262,7 +267,7 @@ export default function LandingPage() {
       <section id="blogs" className="py-20 bg-sky-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">Washify Blogs</h2>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">EZDRY Blog</h2>
             <p className="text-gray-500">Laundry tips, fabric care guides, and service updates.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -293,7 +298,7 @@ export default function LandingPage() {
             <div className="text-5xl mb-6">🏪</div>
             <h2 className="text-4xl font-extrabold text-white mb-4">Own a Laundry Business?</h2>
             <p className="text-sky-100 text-lg mb-8 max-w-2xl mx-auto">
-              Partner with {BRAND_NAME} and grow your business. Get more customers, manage orders easily, and earn more — all on one platform.
+              Partner with {BRAND_NAME} and grow your laundry business in Narnaul. Get more customers, manage orders easily, and earn more — all on one platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -343,6 +348,34 @@ export default function LandingPage() {
               <p className="text-gray-500 text-sm">{SERVICE_AREA}</p>
               <p className="text-gray-400 text-xs">Local pickup and delivery</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INTERNAL LINKS — NARNAUL SEO PAGES */}
+      <section className="py-10 bg-sky-50 border-t border-sky-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-sm font-semibold text-gray-500 mb-4">EZDRY Laundry Service — Narnaul, Haryana</p>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { label: "Laundry Service Narnaul", href: "/laundry-service-narnaul" },
+              { label: "Dry Cleaning Narnaul", href: "/dry-cleaning-narnaul" },
+              { label: "Laundry Near Me Narnaul", href: "/laundry-near-me-narnaul" },
+            ].map((area) => (
+              <button
+                key={area.label}
+                onClick={() => navigate(area.href)}
+                className="flex items-center gap-1.5 text-sm text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-full px-4 py-1.5 transition-colors"
+              >
+                <MapPin className="w-3.5 h-3.5" /> {area.label}
+              </button>
+            ))}
+            <button
+              onClick={() => navigate("/blog")}
+              className="flex items-center gap-1.5 text-sm text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-full px-4 py-1.5 transition-colors"
+            >
+              <BookOpenText className="w-3.5 h-3.5" /> Laundry Tips Blog
+            </button>
           </div>
         </div>
       </section>

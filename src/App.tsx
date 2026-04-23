@@ -41,6 +41,13 @@ import AdminUsers from "@/pages/admin/users";
 import AdminNotifications from "@/pages/admin/notifications";
 import AdminBlogs from "@/pages/admin/blogs";
 
+// SEO Pages — Narnaul
+import LaundryServiceNarnaul from "@/pages/seo/laundry-service-narnaul";
+import DryCleaningNarnaul from "@/pages/seo/dry-cleaning-narnaul";
+import LaundryNearMeNarnaul from "@/pages/seo/laundry-near-me-narnaul";
+import BlogIndex from "@/pages/seo/blog-index";
+import BlogPost from "@/pages/seo/blog-post";
+
 const queryClient = new QueryClient({
   defaultOptions: { 
     queries: { 
@@ -69,6 +76,13 @@ function Router() {
     <Switch>
       {/* Main Landing Page */}
       <Route path="/" component={LandingPage} />
+
+      {/* SEO Pages — Narnaul */}
+      <Route path="/laundry-service-narnaul" component={LaundryServiceNarnaul} />
+      <Route path="/dry-cleaning-narnaul" component={DryCleaningNarnaul} />
+      <Route path="/laundry-near-me-narnaul" component={LaundryNearMeNarnaul} />
+      <Route path="/blog" component={BlogIndex} />
+      <Route path="/blog/:slug" component={BlogPost} />
 
       {/* Customer Portal */}
       <Route path="/customer/login" component={CustomerLogin} />
