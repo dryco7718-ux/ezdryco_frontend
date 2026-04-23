@@ -42,7 +42,7 @@ export default function CustomerLogin() {
         </button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <WashifyLogo size={56} textColor="text-white" className="mb-4" />
-          <p className="text-sky-100 text-sm leading-relaxed">Washify - Cloth Spa, Wear Fresh Every Day</p>
+          <p className="text-sky-100 text-sm leading-relaxed">Ezdry — Wear Fresh, Every Day</p>
         </motion.div>
       </div>
 
@@ -105,7 +105,7 @@ export default function CustomerLogin() {
 
           <div className="text-center">
             <p className="text-sm text-gray-500">
-              New to Washify?{" "}
+              New to Ezdry?{" "}
               <button onClick={() => navigate("/customer/register")} className="text-sky-500 font-semibold hover:underline">
                 Create Account
               </button>

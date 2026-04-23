@@ -48,7 +48,7 @@ export default function CustomerRegister() {
           <div className="w-20 h-20 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-sky-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Washify!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Ezdry!</h2>
           <p className="text-gray-500 text-sm mb-8">Your account has been created successfully.<br />Please login with your phone number & password.</p>
           <Button onClick={() => navigate("/customer/login")} className="bg-sky-500 hover:bg-sky-600 text-white rounded-2xl px-10 h-12 font-semibold">
             Go to Login
@@ -67,7 +67,7 @@ export default function CustomerRegister() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <WashifyLogo size={56} textColor="text-white" className="mb-4" />
           <h1 className="text-2xl font-bold text-white mb-1">Create Account</h1>
-          <p className="text-sky-100 text-sm">Join Washify - Cloth Spa awaits you!</p>
+          <p className="text-sky-100 text-sm">Join Ezdry — Wear Fresh, Every Day!</p>
         </motion.div>
       </div>
 
