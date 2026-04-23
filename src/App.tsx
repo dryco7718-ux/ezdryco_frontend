@@ -41,6 +41,14 @@ import AdminUsers from "@/pages/admin/users";
 import AdminNotifications from "@/pages/admin/notifications";
 import AdminBlogs from "@/pages/admin/blogs";
 
+// SEO Pages
+import LaundryServiceDelhi from "@/pages/seo/laundry-service-delhi";
+import LaundryServiceSouthDelhi from "@/pages/seo/laundry-service-south-delhi";
+import LaundryServiceSaket from "@/pages/seo/laundry-service-saket";
+import LaundryServiceLajpatNagar from "@/pages/seo/laundry-service-lajpat-nagar";
+import BlogIndex from "@/pages/seo/blog-index";
+import BlogPost from "@/pages/seo/blog-post";
+
 const queryClient = new QueryClient({
   defaultOptions: { 
     queries: { 
@@ -69,6 +77,16 @@ function Router() {
     <Switch>
       {/* Main Landing Page */}
       <Route path="/" component={LandingPage} />
+
+      {/* SEO Location Pages */}
+      <Route path="/laundry-service-delhi" component={LaundryServiceDelhi} />
+      <Route path="/laundry-service-south-delhi" component={LaundryServiceSouthDelhi} />
+      <Route path="/laundry-service-saket" component={LaundryServiceSaket} />
+      <Route path="/laundry-service-lajpat-nagar" component={LaundryServiceLajpatNagar} />
+
+      {/* Blog */}
+      <Route path="/blog" component={BlogIndex} />
+      <Route path="/blog/:slug" component={BlogPost} />
 
       {/* Customer Portal */}
       <Route path="/customer/login" component={CustomerLogin} />
