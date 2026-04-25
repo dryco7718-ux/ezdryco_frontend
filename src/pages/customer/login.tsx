@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginCustomer } from "@/lib/auth-api";
 import { saveCustomerSession } from "@/lib/session";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 
 export default function CustomerLogin() {
   const [, navigate] = useLocation();
@@ -41,7 +41,7 @@ export default function CustomerLogin() {
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <WashifyLogo size={56} textColor="text-white" className="mb-4" />
+          <EZDRYLogo size={56} textColor="text-white" className="mb-4" />
           <p className="text-sky-100 text-sm leading-relaxed">Ezdry — Wear Fresh, Every Day</p>
         </motion.div>
       </div>

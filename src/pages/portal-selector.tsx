@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { User, Store, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 
 export default function PortalSelector() {
   const portals = [
@@ -43,7 +43,7 @@ export default function PortalSelector() {
         className="text-center mb-12"
       >
         <div className="flex items-center justify-center gap-2 mb-4">
-          <WashifyLogo size={42} />
+          <EZDRYLogo size={42} />
         </div>
         <p className="text-base text-sky-600 font-medium mb-1">EZDRY — Wear Fresh, Every Day</p>
         <p className="text-sm text-gray-500 max-w-md mx-auto">

@@ -1,6 +1,6 @@
-const CURRENT_CUSTOMER_KEY = "washify_current_customer";
-const CURRENT_BUSINESS_KEY = "washify_current_business";
-const SESSION_TOKEN_KEY = "washify_session_token";
+const CURRENT_CUSTOMER_KEY = "ezdry_current_customer";
+const CURRENT_BUSINESS_KEY = "ezdry_current_business";
+const SESSION_TOKEN_KEY = "ezdry_session_token";
 
 export type CustomerSession = {
   id: string;

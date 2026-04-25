@@ -72,7 +72,7 @@ const ITEM_EMOJIS: Record<string, string> = {
   linen: "🧺",
 };
 
-const SELECTED_BUSINESS_STORAGE_KEY = "washify_selected_business";
+const SELECTED_BUSINESS_STORAGE_KEY = "ezdry_selected_business";
 
 export default function BookOrder() {
   const [, navigate] = useLocation();

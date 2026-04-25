@@ -4,6 +4,13 @@ import { CheckCircle, MapPin, ChevronRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
 import PublicLayout from "@/layouts/public-layout";
+import { FAQAccordion } from "@/components/FAQAccordion";
+
+const NEAR_ME_FAQS = [
+  { q: "Do I need to pack my clothes before pickup?", a: "No, just keep them ready in any bag. Our rider will transfer them to a reusable EZDRY bag." },
+  { q: "Can I schedule a pickup for a specific time?", a: "Yes, you can choose a convenient 2-hour time slot for pickup during booking." },
+  { q: "Is there a minimum order amount for free pickup?", a: "Yes, free pickup is available for orders above ₹199. Orders below this amount have a small convenience fee." }
+];
 
 const LOCALITIES = [
   { name: "Old Narnaul", detail: "Market area, old city lanes" },
@@ -158,6 +165,13 @@ export default function LaundryNearMeNarnaul() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQAccordion
+        items={NEAR_ME_FAQS}
+        heading="Frequently Asked Questions"
+        bg="bg-white"
+      />
 
       {/* CTA */}
       <section className="py-16 px-5 bg-sky-500">

@@ -6,7 +6,7 @@ interface LogoProps {
   iconOnly?: boolean;
 }
 
-export function WashifyLogo({
+export function EZDRYLogo({
   size = 36,
   className = "",
   showText = true,

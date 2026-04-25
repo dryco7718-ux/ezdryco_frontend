@@ -5,7 +5,7 @@ import { Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 
 const ADMIN_EMAIL = "kbdon7718@gmail.com";
 const ADMIN_PASSWORD = "@Zad7718";
@@ -24,7 +24,7 @@ export default function AdminLogin() {
     setLoading(true);
     setTimeout(() => {
       if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        localStorage.setItem("washify_admin_logged_in", "true");
+        localStorage.setItem("ezdry_admin_logged_in", "true");
         navigate("/admin/dashboard");
       } else {
         setError("Invalid credentials. Admin access only.");
@@ -37,7 +37,7 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white flex items-center justify-center p-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
-          <WashifyLogo size={60} className="justify-center mb-4" />
+          <EZDRYLogo size={60} className="justify-center mb-4" />
           <h1 className="text-2xl font-bold text-gray-900">EzDry Admin</h1>
           <p className="text-gray-400 text-sm mt-1">Cloth Spa — Platform Management</p>
         </div>

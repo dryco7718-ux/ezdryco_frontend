@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { MapPin, Menu, X, ChevronRight } from "lucide-react";
 
@@ -68,7 +68,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
 
           {/* Logo */}
           <button onClick={() => navigate("/")} className="focus:outline-none flex-shrink-0">
-            <WashifyLogo size={34} />
+            <EZDRYLogo size={34} />
           </button>
 
           {/* Desktop Nav */}
@@ -174,7 +174,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
 
             {/* Brand column */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <WashifyLogo size={34} textColor="text-white" className="mb-4" />
+              <EZDRYLogo size={34} textColor="text-white" className="mb-4" />
               <p className="text-gray-400 text-sm leading-relaxed mb-4">
                 Narnaul's professional laundry & dry cleaning service. Free doorstep pickup. Starting ₹199.
               </p>

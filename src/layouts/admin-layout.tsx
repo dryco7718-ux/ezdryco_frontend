@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Store, Percent,
   Users, Bell, LogOut, ShieldCheck, Menu, X, BookOpen
 } from "lucide-react";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -29,7 +29,7 @@ export function AdminLayout({ children }: Props) {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-sky-100 flex flex-col transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static`}>
         <div className="p-6 border-b border-sky-50">
           <div className="flex items-center gap-2">
-            <WashifyLogo size={34} iconOnly />
+            <EZDRYLogo size={34} iconOnly />
             <div>
               <p className="font-bold text-gray-900 text-sm">EZDRY Admin</p>
               <p className="text-xs text-gray-400">Super Admin Panel</p>

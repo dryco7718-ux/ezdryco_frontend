@@ -10,7 +10,14 @@ import { listBlogs } from "@/lib/blogs";
 import { getCurrentCustomer, getCurrentBusiness } from "@/lib/session";
 import { useSEO } from "@/hooks/useSEO";
 import { BlogCard } from "@/components/BlogCard";
+import { FAQAccordion } from "@/components/FAQAccordion";
 import PublicLayout from "@/layouts/public-layout";
+
+const LANDING_FAQS = [
+  { q: "Do you offer free pickup and delivery in Narnaul?", a: "Yes, we offer free doorstep pickup and delivery on all orders above ₹199 across Narnaul." },
+  { q: "How long does it take to get my clothes back?", a: "Standard wash and fold takes 24-48 hours. Dry cleaning may take up to 72 hours. We also offer express same-day service." },
+  { q: "Is dry cleaning safe for expensive fabrics?", a: "Absolutely. We use professional-grade solvents and techniques suitable for silk, wool, and heavy embroidery." }
+];
 
 const BRAND_NAME = import.meta.env.VITE_BRAND_NAME || "EZDRY";
 const CONTACT_PHONE = "+91 80533 17489";
@@ -269,6 +276,13 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQAccordion
+        items={LANDING_FAQS}
+        heading="Frequently Asked Questions"
+        bg="bg-white"
+      />
 
       {/* JOIN AS BUSINESS */}
       <section className="py-20 bg-gradient-to-br from-sky-500 to-sky-600">

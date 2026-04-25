@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useCreateAddress, useCreateOrder, useValidateCoupon, useListAddresses } from "@/lib/api-client-react";
 import { getCurrentCustomer, updateCustomerSession } from "@/lib/session";
 
-const SELECTED_BUSINESS_STORAGE_KEY = "washify_selected_business";
+const SELECTED_BUSINESS_STORAGE_KEY = "ezdry_selected_business";
 
 const PAYMENT_METHODS = [
   { id: "upi", label: "UPI / Google Pay", icon: Smartphone, color: "text-green-600" },

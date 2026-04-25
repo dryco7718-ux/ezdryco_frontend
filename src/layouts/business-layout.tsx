@@ -5,7 +5,7 @@ import {
   Bike, Users, Bell, LogOut, Store, Menu, X
 } from "lucide-react";
 import { useState } from "react";
-import { WashifyLogo } from "@/components/Logo";
+import { EZDRYLogo } from "@/components/Logo";
 import { NotificationBell } from "@/components/NotificationPanel";
 
 const NAV_ITEMS = [
@@ -28,7 +28,7 @@ export function BusinessLayout({ children }: Props) {
   if (isLogin) return <>{children}</>;
 
   const currentBusiness = (() => {
-    try { return JSON.parse(localStorage.getItem("washify_current_business") || "{}"); } catch { return {}; }
+    try { return JSON.parse(localStorage.getItem("ezdry_current_business") || "{}"); } catch { return {}; }
   })();
 
   return (
@@ -36,7 +36,7 @@ export function BusinessLayout({ children }: Props) {
       {/* Desktop Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-white shadow-sm flex flex-col transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static lg:shadow-none lg:border-r lg:border-sky-100`}>
         <div className="p-5 border-b border-sky-50">
-          <WashifyLogo size={32} />
+          <EZDRYLogo size={32} />
           <p className="text-xs text-gray-400 mt-2 font-medium">{currentBusiness.shopName || "Business Portal"}</p>
         </div>
         <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
