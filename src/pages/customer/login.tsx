@@ -25,7 +25,7 @@ export default function CustomerLogin() {
     setLoading(true);
     try {
       const result = await loginCustomer({ phone, password });
-      saveCustomerSession(result.user, result.token);
+      saveCustomerSession(result.user, result.token, result.refreshToken);
       navigate("/customer/home");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Login failed.");

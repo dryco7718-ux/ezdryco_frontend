@@ -9,6 +9,7 @@
     "build:analyze": "node node_modules/vite/bin/vite.js build --config vite.config.ts && npx vite-bundle-visualizer",
     "serve": "node node_modules/vite/bin/vite.js preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+    "test": "node node_modules/vitest/vitest.mjs run",
     "analyze": "npx vite-bundle-visualizer"
   },
   "devDependencies": {
@@ -79,6 +80,7 @@
     "typescript": "^5.9.3",
     "vaul": "^1.1.2",
     "vite": "^7.3.0",
+    "vitest": "^3.2.4",
     "wouter": "^3.3.5",
     "zod": "^3.25.76"
   }

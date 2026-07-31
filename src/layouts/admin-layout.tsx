@@ -5,6 +5,7 @@ import {
   Users, Bell, LogOut, ShieldCheck, Menu, X, BookOpen
 } from "lucide-react";
 import { EZDRYLogo } from "@/components/Logo";
+import { clearAdminSession } from "@/lib/session";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -56,7 +57,7 @@ export function AdminLayout({ children }: Props) {
           ))}
         </nav>
         <div className="p-6 border-t border-white/5">
-          <button onClick={() => navigate("/admin/login")} className="flex items-center gap-4 px-4 py-3.5 w-full rounded-2xl text-sm font-bold text-red-400 hover:bg-red-500/10 transition-colors">
+          <button onClick={() => { clearAdminSession(); navigate("/admin/login"); }} className="flex items-center gap-4 px-4 py-3.5 w-full rounded-2xl text-sm font-bold text-red-400 hover:bg-red-500/10 transition-colors">
             <LogOut className="w-5 h-5" />
             Sign Out
           </button>
@@ -67,7 +68,12 @@ export function AdminLayout({ children }: Props) {
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="bg-white border-b border-gray-100 px-8 py-5 flex items-center gap-4 sticky top-0 z-30">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label={sidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={sidebarOpen}
+            className="lg:hidden p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <div className="flex-1">

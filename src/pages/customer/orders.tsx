@@ -1,7 +1,8 @@
 import { Link } from "wouter";
-import { Clock, ChevronRight } from "lucide-react";
+import { Clock, ChevronRight, Package } from "lucide-react";
 import { getCurrentCustomer } from "@/lib/session";
 import { useListOrders } from "@/lib/api-client-react";
+import { LoadingState, ErrorState, EmptyState } from "@/components/states";
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   requested: { label: "Placed", color: "bg-yellow-100 text-yellow-700" },
@@ -15,8 +16,8 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 export default function CustomerOrders() {
   const customer = getCurrentCustomer();
   const customerId = customer?.id ?? "";
-  const { data: ordersData } = useListOrders({ customerId }, { query: { enabled: !!customerId } as any });
-  const orders = ordersData?.orders ?? [];
+  const ordersQuery = useListOrders({ customerId }, { query: { enabled: !!customerId } as any });
+  const orders = (ordersQuery.data as { orders?: any[] } | undefined)?.orders ?? [];
 
   return (
     <div className="min-h-full bg-gray-50 pb-6">
@@ -28,6 +29,20 @@ export default function CustomerOrders() {
       <div className="px-5 mt-4 space-y-3">
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Orders</h3>
+          {ordersQuery.isLoading ? (
+            <LoadingState label="Loading your orders…" />
+          ) : ordersQuery.isError ? (
+            <ErrorState
+              message="We couldn't load your orders."
+              onRetry={() => ordersQuery.refetch()}
+            />
+          ) : orders.length === 0 ? (
+            <EmptyState
+              icon={<Package className="h-8 w-8" />}
+              title="No orders yet"
+              message="Your placed orders will appear here."
+            />
+          ) : (
           <div className="space-y-3">
             {orders.map((order: any) => (
               <Link key={order.id} href={`/customer/track/${order.id}`}>
@@ -48,9 +63,8 @@ export default function CustomerOrders() {
                 </div>
               </Link>
             ))}
-
-            {orders.length === 0 && <p className="text-sm text-gray-400 text-center py-4">No orders yet</p>}
           </div>
+          )}
         </div>
       </div>
     </div>

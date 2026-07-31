@@ -25,7 +25,7 @@ export default function BusinessLogin() {
     setLoading(true);
     try {
       const result = await loginBusiness({ phone, password });
-      saveBusinessSession(result.business, result.token);
+      saveBusinessSession(result.business, result.token, result.refreshToken);
       navigate("/business/dashboard");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Login failed.");

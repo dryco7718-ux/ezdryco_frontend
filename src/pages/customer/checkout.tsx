@@ -155,7 +155,7 @@ export default function Checkout() {
           pincode: addressForm.pincode.trim(),
         });
 
-        saveCustomerSession(registerResult.user, registerResult.token);
+        saveCustomerSession(registerResult.user, registerResult.token, registerResult.refreshToken);
         setCurrentCustomer(registerResult.user);
         effectiveCustomerId = registerResult.user.id;
       }

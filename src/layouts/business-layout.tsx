@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import { EZDRYLogo } from "@/components/Logo";
 import { NotificationBell } from "@/components/NotificationPanel";
+import { clearBusinessSession } from "@/lib/session";
 
 const NAV_ITEMS = [
   { href: "/business/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -60,7 +61,7 @@ export function BusinessLayout({ children }: Props) {
           ))}
         </nav>
         <div className="p-4 border-t border-gray-50">
-          <button onClick={() => navigate("/business/login")} className="flex items-center gap-3 px-4 py-3 w-full rounded-2xl text-sm font-bold text-red-500 hover:bg-red-50 transition-colors">
+          <button onClick={() => { clearBusinessSession(); navigate("/business/login"); }} className="flex items-center gap-3 px-4 py-3 w-full rounded-2xl text-sm font-bold text-red-500 hover:bg-red-50 transition-colors">
             <LogOut className="w-5 h-5" />
             Sign Out
           </button>
@@ -74,7 +75,12 @@ export function BusinessLayout({ children }: Props) {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Bar */}
         <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex items-center gap-4 sticky top-0 z-30">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label={sidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={sidebarOpen}
+            className="lg:hidden p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <div className="flex-1">

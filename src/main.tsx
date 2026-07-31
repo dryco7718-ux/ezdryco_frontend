@@ -1,6 +1,12 @@
 import { createRoot } from "react-dom/client";
-import { setBaseUrl, setAuthTokenGetter } from "@/lib/api-client-react";
+import {
+  setBaseUrl,
+  setAuthTokenGetter,
+  setRefreshHandler,
+  setAuthFailureHandler,
+} from "@/lib/api-client-react";
 import { getSessionToken } from "@/lib/session";
+import { refreshAccessToken, handleAuthFailure } from "@/lib/auth-refresh";
 import App from "./App";
 import "./index.css";
 
@@ -16,31 +22,17 @@ function formatWindowError(error: unknown, fallbackMessage: string) {
   return fallbackMessage;
 }
 
-// Global error handler to show errors on screen instead of blank page
+// Log runtime errors without wiping the React tree. Recoverable errors (e.g. a
+// rejected fetch handled by React Query) must not blank the whole app.
 window.addEventListener("error", (e) => {
-  const root = document.getElementById("root");
-  const errorDetails = formatWindowError(e.error, e.message);
-  if (root) {
-    root.innerHTML = `
-      <div style="padding: 20px; font-family: sans-serif; color: red;">
-        <h2>Runtime Error</h2>
-        <pre style="background: #fee; padding: 10px; overflow: auto;">${errorDetails}</pre>
-      </div>
-    `;
-  }
+  console.error("[window.error]", formatWindowError(e.error, e.message));
 });
 
 window.addEventListener("unhandledrejection", (e) => {
-  const root = document.getElementById("root");
-  const errorDetails = formatWindowError(e.reason, "Unhandled promise rejection");
-  if (root) {
-    root.innerHTML = `
-      <div style="padding: 20px; font-family: sans-serif; color: red;">
-        <h2>Unhandled Promise Rejection</h2>
-        <pre style="background: #fee; padding: 10px; overflow: auto;">${errorDetails}</pre>
-      </div>
-    `;
-  }
+  console.error(
+    "[unhandledrejection]",
+    formatWindowError(e.reason, "Unhandled promise rejection"),
+  );
 });
 
 try {
@@ -57,6 +49,9 @@ try {
   }
   // Attach session token from localStorage to API requests
   setAuthTokenGetter(() => getSessionToken());
+  // Auto-refresh the access token on 401 and retry once; on failure, sign out.
+  setRefreshHandler(refreshAccessToken);
+  setAuthFailureHandler(handleAuthFailure);
 
   const rootElement = document.getElementById("root");
   if (!rootElement) {

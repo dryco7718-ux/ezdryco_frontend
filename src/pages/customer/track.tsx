@@ -10,6 +10,7 @@ import { DeliveryETA } from "@/components/DeliveryETA";
 import { RescheduleFlow } from "@/components/RescheduleFlow";
 import { ReviewRequestFlow } from "@/components/ReviewRequestFlow";
 import { trackWhatsAppClick, trackPhoneClick } from "@/lib/analytics";
+import { LoadingState, ErrorState } from "@/components/states";
 import { useState } from "react";
 
 export default function TrackOrder() {
@@ -17,7 +18,8 @@ export default function TrackOrder() {
   const [matched, params] = useRoute("/customer/track/:id");
   const orderId = params?.id ?? "1";
 
-  const { data: order } = useGetOrder(orderId);
+  const orderQuery = useGetOrder(orderId);
+  const order = orderQuery.data as any;
   
   // Modal states
   const [showReschedule, setShowReschedule] = useState(false);
@@ -37,7 +39,27 @@ export default function TrackOrder() {
 
   // Calculate item count for ETA
   const itemCount = order?.items?.reduce((sum: number, item: any) => sum + (item.qty || 1), 0) || 5;
-  
+
+  if (orderQuery.isLoading) {
+    return (
+      <div className="min-h-full bg-neutral-50 flex items-center justify-center p-6">
+        <LoadingState label="Loading order…" />
+      </div>
+    );
+  }
+
+  if (orderQuery.isError || !order) {
+    return (
+      <div className="min-h-full bg-neutral-50 flex items-center justify-center p-6">
+        <ErrorState
+          title="Order not found"
+          message="We couldn't load this order. It may have been removed or the link is invalid."
+          onRetry={() => orderQuery.refetch()}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-full bg-neutral-50 flex flex-col">
       {/* Header */}

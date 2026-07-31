@@ -2,6 +2,7 @@ type ApiResponse<T> = T;
 
 type CustomerAuthResponse = {
   token: string;
+  refreshToken?: string;
   user: {
     id: string;
     name: string;
@@ -15,6 +16,7 @@ type CustomerAuthResponse = {
 
 type BusinessAuthResponse = {
   token: string;
+  refreshToken?: string;
   user: {
     id: string;
     name: string;
@@ -34,9 +36,21 @@ type BusinessAuthResponse = {
   };
 };
 
+type AdminAuthResponse = {
+  token: string;
+  refreshToken?: string;
+  user: { id: string; name?: string; email?: string; role?: string };
+};
+
 function getApiBaseUrl() {
-  const configured = import.meta.env.VITE_API_BASE_URL as string | undefined;
-  return (configured || "/api").replace(/\/+$/, "");
+  const configured =
+    (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim() ||
+    (import.meta.env.VITE_API_URL as string | undefined)?.trim() ||
+    (typeof window !== "undefined" &&
+    ["localhost", "127.0.0.1"].includes(window.location.hostname)
+      ? "http://localhost:8080"
+      : "");
+  return `${(configured || "").replace(/\/+$/, "")}/api`;
 }
 
 async function request<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
@@ -46,12 +60,19 @@ async function request<T>(path: string, body: unknown): Promise<ApiResponse<T>> 
     body: JSON.stringify(body),
   });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error((data as { error?: string }).error || "Request failed");
+  const payload = (await response.json().catch(() => ({}))) as {
+    success?: boolean;
+    data?: unknown;
+    message?: string;
+    error?: string;
+  };
+
+  if (!response.ok || payload.success === false) {
+    throw new Error(payload.message || payload.error || "Request failed");
   }
 
-  return data as T;
+  // Unwrap the unified envelope when present.
+  return (payload.data !== undefined ? payload.data : payload) as T;
 }
 
 export function registerCustomer(payload: {
@@ -84,4 +105,8 @@ export function registerBusiness(payload: {
 
 export function loginBusiness(payload: { phone: string; password: string }) {
   return request<BusinessAuthResponse>("/auth/businesses/login", payload);
+}
+
+export function loginAdmin(payload: { email: string; password: string }) {
+  return request<AdminAuthResponse>("/auth/admin/login", payload);
 }

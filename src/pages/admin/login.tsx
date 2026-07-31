@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EZDRYLogo } from "@/components/Logo";
-
-const ADMIN_EMAIL = "kbdon7718@gmail.com";
-const ADMIN_PASSWORD = "@Zad7718";
+import { loginAdmin } from "@/lib/auth-api";
+import { saveAdminSession } from "@/lib/session";
 
 export default function AdminLogin() {
   const [, navigate] = useLocation();
@@ -17,20 +16,20 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setError("");
     if (!email || !password) return setError("Please enter both email and password.");
 
     setLoading(true);
-    setTimeout(() => {
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        localStorage.setItem("ezdry_admin_logged_in", "true");
-        navigate("/admin/dashboard");
-      } else {
-        setError("Invalid credentials. Admin access only.");
-      }
+    try {
+      const result = await loginAdmin({ email, password });
+      saveAdminSession(result.user, result.token, result.refreshToken);
+      navigate("/admin/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Invalid credentials. Admin access only.");
+    } finally {
       setLoading(false);
-    }, 700);
+    }
   };
 
   return (

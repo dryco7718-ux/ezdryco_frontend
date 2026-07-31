@@ -18,6 +18,59 @@ const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 let _baseUrl: string | null = null;
 let _authTokenGetter: AuthTokenGetter | null = null;
 
+// ---------------------------------------------------------------------------
+// Refresh-on-401 configuration
+// ---------------------------------------------------------------------------
+
+/** Performs a token refresh. Resolves true when a new access token is available. */
+export type RefreshHandler = () => Promise<boolean>;
+/** Called when authentication cannot be recovered (clear session + redirect). */
+export type AuthFailureHandler = () => void;
+
+let _refreshHandler: RefreshHandler | null = null;
+let _onAuthFailure: AuthFailureHandler | null = null;
+let _refreshInFlight: Promise<boolean> | null = null;
+
+export function setRefreshHandler(handler: RefreshHandler | null): void {
+  _refreshHandler = handler;
+}
+
+export function setAuthFailureHandler(handler: AuthFailureHandler | null): void {
+  _onAuthFailure = handler;
+}
+
+/**
+ * Runs at most one refresh at a time (single-flight). Concurrent 401s all await
+ * the same refresh promise instead of triggering parallel refreshes.
+ */
+function runRefreshOnce(): Promise<boolean> {
+  if (_refreshInFlight) return _refreshInFlight;
+  if (!_refreshHandler) return Promise.resolve(false);
+  _refreshInFlight = _refreshHandler()
+    .catch(() => false)
+    .finally(() => {
+      _refreshInFlight = null;
+    });
+  return _refreshInFlight;
+}
+
+/**
+ * Unwraps the unified API envelope ({ success, data, message, error, ... }).
+ * Returns the inner payload on success; leaves non-envelope bodies untouched.
+ */
+function unwrapEnvelope(body: unknown): unknown {
+  if (
+    body &&
+    typeof body === "object" &&
+    "success" in body &&
+    "statusCode" in body &&
+    "data" in body
+  ) {
+    return (body as { data: unknown }).data;
+  }
+  return body;
+}
+
 /**
  * Set a base URL that is prepended to every relative request URL
  * (i.e. paths that start with `/`).
@@ -335,37 +388,65 @@ export async function customFetch<T = unknown>(
     throw new TypeError(`customFetch: ${method} requests cannot have a body.`);
   }
 
-  const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
+  const url = resolveUrl(input);
+  const requestInfo = { method, url };
+  // Never attempt refresh-retry on the refresh endpoint itself.
+  const isRefreshCall = url.includes("/auth/refresh");
 
-  if (
-    typeof init.body === "string" &&
-    !headers.has("content-type") &&
-    looksLikeJson(init.body)
-  ) {
-    headers.set("content-type", "application/json");
-  }
+  const buildHeaders = async (): Promise<Headers> => {
+    const headers = mergeHeaders(
+      isRequest(input) ? input.headers : undefined,
+      headersInit,
+    );
 
-  if (responseType === "json" && !headers.has("accept")) {
-    headers.set("accept", DEFAULT_JSON_ACCEPT);
-  }
+    if (
+      typeof init.body === "string" &&
+      !headers.has("content-type") &&
+      looksLikeJson(init.body)
+    ) {
+      headers.set("content-type", "application/json");
+    }
 
-  // Attach bearer token when an auth getter is configured and no
-  // Authorization header has been explicitly provided.
-  if (_authTokenGetter && !headers.has("authorization")) {
-    const token = await _authTokenGetter();
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+    if (responseType === "json" && !headers.has("accept")) {
+      headers.set("accept", DEFAULT_JSON_ACCEPT);
+    }
+
+    // Always refresh the bearer token from the getter so a retry uses the new
+    // token. (We overwrite rather than skip, since a prior 401 may have rotated
+    // the stored token.)
+    if (_authTokenGetter) {
+      const token = await _authTokenGetter();
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+    }
+
+    return headers;
+  };
+
+  const doFetch = async (): Promise<Response> =>
+    fetch(input, { ...init, method, headers: await buildHeaders() });
+
+  let response = await doFetch();
+
+  // Refresh-on-401: try once to refresh the access token and retry the request.
+  if (response.status === 401 && !isRefreshCall && _refreshHandler) {
+    const refreshed = await runRefreshOnce();
+    if (refreshed) {
+      response = await doFetch();
+      if (response.status === 401) {
+        _onAuthFailure?.();
+      }
+    } else {
+      _onAuthFailure?.();
     }
   }
-
-  const requestInfo = { method, url: resolveUrl(input) };
-
-  const response = await fetch(input, { ...init, method, headers });
 
   if (!response.ok) {
     const errorData = await parseErrorBody(response, method);
     throw new ApiError(response, errorData, requestInfo);
   }
 
-  return (await parseSuccessBody(response, responseType, requestInfo)) as T;
+  const body = await parseSuccessBody(response, responseType, requestInfo);
+  return unwrapEnvelope(body) as T;
 }

@@ -1,8 +1,13 @@
 import { Suspense, lazy } from "react";
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Redirect, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import {
+  getCurrentCustomer,
+  getCurrentBusiness,
+  getCurrentAdmin,
+} from "@/lib/session";
 
 import LandingPage from "@/pages/landing";
 import NotFound from "@/pages/not-found";
@@ -91,12 +96,17 @@ const queryClient = new QueryClient({
 });
 
 function WithCustomerLayout({ children }: { children: React.ReactNode }) {
+  if (!getCurrentCustomer()) return <Redirect to="/customer/login" />;
   return <CustomerLayout>{children}</CustomerLayout>;
 }
 function WithBusinessLayout({ children }: { children: React.ReactNode }) {
+  if (!getCurrentBusiness()) return <Redirect to="/business/login" />;
   return <BusinessLayout>{children}</BusinessLayout>;
 }
 function WithAdminLayout({ children }: { children: React.ReactNode }) {
+  const isAdmin =
+    getCurrentAdmin() || localStorage.getItem("ezdry_admin_logged_in") === "true";
+  if (!isAdmin) return <Redirect to="/admin/login" />;
   return <AdminLayout>{children}</AdminLayout>;
 }
 

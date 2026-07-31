@@ -9,6 +9,7 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContai
 import { useGetBusinessStats, useGetRevenueTrend, useListOrders } from "@/lib/api-client-react";
 import { getCurrentBusiness, updateBusinessSession } from "@/lib/session";
 import { updateBusinessProfile } from "@/lib/profile-api";
+import { ErrorState } from "@/components/states";
 
 const STATUS_COLORS: Record<string, string> = {
   requested: "bg-amber-100 text-amber-700",
@@ -35,7 +36,8 @@ export default function BusinessDashboard() {
     pincode: "",
     description: "",
   });
-  const { data: stats } = useGetBusinessStats(businessId, { query: { enabled: !!businessId } as any });
+  const statsQuery = useGetBusinessStats(businessId, { query: { enabled: !!businessId } as any });
+  const stats = statsQuery.data as any;
   const { data: trend } = useGetRevenueTrend({ businessId: businessId || undefined, period: "week" }, { query: { enabled: !!businessId } as any });
   const { data: ordersData } = useListOrders({ businessId: businessId || undefined, limit: 5 }, { query: { enabled: !!businessId } as any });
 
@@ -95,24 +97,35 @@ export default function BusinessDashboard() {
         <p className="text-gray-400 text-sm font-medium">Real-time performance metrics</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {KPI_CARDS.map((card, i) => (
-          <motion.div key={card.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-            <Card className="border-none bg-white shadow-xl shadow-gray-200/40 rounded-[2rem] overflow-hidden group hover:scale-[1.02] transition-all">
-              <CardContent className="p-6">
-                <div className={`w-12 h-12 ${card.bg} rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:rotate-12`}>
-                  <card.icon className={`w-6 h-6 ${card.color}`} />
-                </div>
-                <p className="text-3xl font-black text-gray-900 tracking-tighter mb-1">{card.value}</p>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{card.label}</p>
-                <div className="flex items-center gap-1.5 text-[11px] font-black text-emerald-500 uppercase tracking-tight bg-emerald-50 w-fit px-2 py-0.5 rounded-lg">
-                  <ArrowUpRight className="w-3 h-3" />{card.trend}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+      {statsQuery.isError ? (
+        <ErrorState
+          message="We couldn't load your business metrics."
+          onRetry={() => statsQuery.refetch()}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {KPI_CARDS.map((card, i) => (
+            <motion.div key={card.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+              <Card className="border-none bg-white shadow-xl shadow-gray-200/40 rounded-[2rem] overflow-hidden group hover:scale-[1.02] transition-all">
+                <CardContent className="p-6">
+                  <div className={`w-12 h-12 ${card.bg} rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:rotate-12`}>
+                    <card.icon className={`w-6 h-6 ${card.color}`} />
+                  </div>
+                  {statsQuery.isLoading ? (
+                    <div className="h-8 w-24 animate-pulse rounded-md bg-gray-100 mb-1" />
+                  ) : (
+                    <p className="text-3xl font-black text-gray-900 tracking-tighter mb-1">{card.value}</p>
+                  )}
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{card.label}</p>
+                  <div className="flex items-center gap-1.5 text-[11px] font-black text-emerald-500 uppercase tracking-tight bg-emerald-50 w-fit px-2 py-0.5 rounded-lg">
+                    <ArrowUpRight className="w-3 h-3" />{card.trend}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Profile Card */}
